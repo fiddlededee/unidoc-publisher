@@ -1,0 +1,36 @@
+<office:document>  
+  <office:automatic-styles> 
+    <this-tag-should-be-left/>  
+    <style:style
+                    style:family="paragraph"
+                    style:name="PAMC1"
+                    style:parent-style-name="Heading_20_1">
+      <style:text-properties
+                    fo:font-size="14pt"/>
+    </style:style>
+    <style:style
+                    style:family="paragraph"
+                    style:name="PAMC2"
+                    style:parent-style-name="Body_20_Text"/>
+    <style:style
+                    style:family="paragraph"
+                    style:name="PAMC3"
+                    style:parent-style-name="Heading_20_1">
+      <style:text-properties
+                    fo:font-size="14pt"/>
+    </style:style>
+  </office:automatic-styles>  
+  <office:body> 
+    <office:text
+                    text:use-soft-page-breaks="true"> 
+      <this-tag-should-be-left/>  
+      <text:h
+                    text:style-name="PAMC1">Heading 1</text:h>
+      <text:p
+                    text:style-name="PAMC2">Some text</text:p>
+      <text:h
+                    text:style-name="PAMC3">Heading 1</text:h>  
+      <this-tag-should-be-left/> 
+    </office:text> 
+  </office:body> 
+</office:document>

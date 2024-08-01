@@ -1,0 +1,13 @@
+:toc: macro
+:toclevels: 1
+:sectnums:
+
+== Section 1
+
+=== Section 1.1
+
+==== Section 1.1.1
+
+toc::[]
+
+== Section 2

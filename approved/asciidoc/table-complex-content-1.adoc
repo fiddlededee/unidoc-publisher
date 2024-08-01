@@ -1,0 +1,26 @@
+[cols="1,2", options=header]
+|===
+^|Content type ^|The result
+
+|paragraph
+a|
+Paragraph 1
+
+Paragraph 2
+
+|list
+a|
+. Item 1
+.. Subitem
+... Subitem
+.... Subitem
+. Item 2
+
+|table
+a|
+!===
+!Subtable
+!===
+|===
+
+Some paragraph after table.

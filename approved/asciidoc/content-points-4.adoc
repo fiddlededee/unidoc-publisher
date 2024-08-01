@@ -1,0 +1,2 @@
+[.tag--content-2]
+This text should replace the whole paragraph in the template

@@ -1,0 +1,222 @@
+= UniDoc Publisher
+:toc: left
+:source-highlighter: rouge
+:src-root: https://github.com/fiddlededee/unidoc-publisher/blob/main
+
+== How to run
+
+Uni-Doc Publisher is just a `.jar`, published to https://central.sonatype.com/[Maven Central]. The most common way to use it is from Kotlin script or as a part of a gradle pipeline that is almost the same.
+
+As an example you may download link:{src-root}/doc/build-doc.kts[the Kotlin script file]. It is used to build the current documentation (prerequisites: Java 11+ and Kotlin 19+). The script runs with the following CLI parameters.
+
+[[example-cli-help]]
+----
+include::../autopartials/example-cli-help.txt[]
+----
+
+[source,kotlin]
+.The script uses FODT converter in the following way:
+----
+include::../../doc/build-doc.main.kts[tag=body,indent=0]
+----
+<1> Applying Asciidoctor adapter
+<2> Loading template. You may take link:{src-root}/approved/asciidoc/template-1.fodt[this template] as a starting point
+<3> Converting source file from Asciidoc to HTML
+<4> Adding rouge styles for highlighting code in addition to basic styles from `AsciidoctorAdapter`
+<5> Parsing HTML into AST
+<6> Correcting image relative paths
+<7> Adding logo to AST if necessary
+<8> Converting AST to FODT
+<9> Checking spelling if necessary
+<10> Outputting HTML if necessary
+<11> Outputting AST as YAML if necessary
+<12> Outputting FODT
+
+[WARNING]
+====
+The Kotlin script file name should always end with `main.kts`.
+====
+
+== The idea
+
+If you are tired of struggling with lengthy documentation transformation pipelines, juggling multiple technological stacks just to get decent ODT, DOCX or PDF output, try UniDoc Publisher, the simple and powerful document publishing solution for DocOps engineers!
+
+UniDoc Publisher is a highly customizable Kotlin library that provides a comprehensive set of tools to parse HTML files into abstract syntax tree (AST), transform it in any desirable way and render the Open Document flat format (FODT).
+The latter you can convert to PDF or DOCX with LibreOffice.
+
+UniDoc Publisher is heavily influenced by Pandoc.
+Unlike Pandoc, UniDoc Publisher allows you to perform almost all necessary steps within a single Kotlin script.
+Plus, UniDoc Publisher's heavy reliance on Kotlin DSL constructions means you'll have unlimited power to customize output on the parser, transformation, and writer sides.
+
+True, UniDoc Publisher accepts only HTML as a source, but all text markups produce HTML and some common markups, such as Asciidoc and Markdown, have Java converters that enable you to get the source HTML within this same Kotlin script. For Asciidoc a basic adapter is already included in the library.
+
+UniDoc Publisher has been designed with ease of use in mind, you can focus on getting the job done without getting bogged down in complicated syntax or lengthy code.
+
+UniDoc Publisher supersedes https://github.com/CourseOrchestra/asciidoctor-open-document[Open Document converter for Asciidoctor]. Despite it is now designed to publish any text markup, https://docs.asciidoctor.org/asciidoc/latest/[Asciidoc] IMHO is the best and most universal simple text markup with a very well-designed and extensible converter (https://docs.asciidoctor.org/asciidoctor/latest/[Asciidoctor]), large ecosystem and a great community.
+
+The prefix `Uni` means UniDoc Publisher (1) is quite [green]##**uni**##versal (almost all markups can output HTML) and `(2) can [green]##**uni**##te several sources of documentation.
+
+
+== The main features of UniDoc Publisher
+
+=== HTML as a source format
+
+HTML format is produced by almost all native markup converters, and it is quite semantic in itself.
+
+The result produced by those native converters is usually very similar, so we can create a universal reader with minimal customization for each markup language. Moreover, HTML is produced by exactly the native converter, so we are sure, that the source markup is correctly processed.
+
+If HTML doesn't contain some necessary data, we can usually tune the native converter.
+For example, Asciidoc has an attribute `pdfwidth` that shouldn't necessarily be put into HTML.
+But we can force it to HTML extending the converter.
+
+Styles for HTML and printing format may differ significantly, still we often need to reuse at least part of CSS styles in a printing document. For example, the code in this document is highlighted with Rouge. The styles are produced directly from the CSS, created with `rougify` command.
+
+In order to simplify using UniDoc Publisher with various markups, an adapter mechanism is implemented. Adapter is just a number of parsing rules, AST transformations, and styling rules that can be extended or changed in any part.
+
+=== Easily manipulated AST
+
+AST transformation with Kotlin is very easy, and along with the styling mechanism, it is suggested as the main tool for customizing output:
+
+* Don't define rules for numerating chapters and sections, just numerate them.
+* Don't define if the image caption should be above or below, just place it there.
+* Don't define the way the title page should look, just create it the way you need.
+
+It is also possible to build an AST <<from-scratch, from scratch>>:
+
+[source,kotlin]
+----
+include::../../example/builder/table.main.kts[tag=letter-builder]
+----
+
+=== Kotlin script as the main automation language
+
+* Kotlin script may be used a standalone runnable file, that contains dependency declarations.
+It can be run with the command `kotlin [Kotlin script file]`.
+
+* Kotlin is a statically typed language.
+Unlike DevOps scripts, DocOps scripts are more voluminous, and are more often modified as we change documentation structure rather often.
+Static typing contributes greatly to the maintainability of such scripts.
+
+* Kotlin is a wrapper language for Java, so you may use the whole Java ecosystem.
+
+* The project can be ported to Kotlin for JavaScript and probably to Kotlin Native.
+
+* Kotlin has an excellent support for builder and templating constructions, that allows us to tune the outlook of resulting document by transforming AST in a desirable way.
+It is a good deal simpler than customizing the outlook with a huge number of options that nobody remembers.
+
+== Considerations for using UniDoc Publisher
+
+=== As a report builder
+
+UniDoc Publisher was created with the report building purpose in mind. That's why I tried to keep the number of dependencies as small as possible. But it was not optimized in any way, so before using it please check, whether its performance fits your requirements.
+
+=== As a validation tool
+
+Validation is a very considerable issue that was kept in mind while designing UniDoc Publisher. The <<examples, examples>> show the approach for a document validation.
+
+For now, UniDoc Publisher doesn't support source mapping. It will be implemented for Asciidoctor Adapter in the nearest future.
+
+=== As a publishing tool
+
+If you would like to use LibreOffice (LO) Writer for publishing consider the following issues.
+
+. LO Writer ignores paragraph typography settings like window/orphan control or keep with next paragraph within table cells. With UniDoc Publisher you may style last row in a table to be unbreakable, but nothing more.
+. You can't make a table row keep together with the next row. You can't even prevent a cell from breaking if it spans several rows.
+. LibreOffice Writer makes a poor looking table of contents if the text heading can't be put in one line. Still with UniDoc Publisher you may automatically create your own table of contents which will look the proper way.
+. If you need to convert the document to MS Word, some tuning is needed. For example MS Word doesn't support margin after table. That's why for MS Word documents you should either define margin before the next paragraph (with UniDoc Publisher styling approach) or, alternatively, put after each table zero height paragraph with a margin after it.
+. Even minor changes in LibreOffice may lead to considerable changes in the way the document is rendered. For example the letter positioning in version 7.4 (marked with green) differs from the letter positioning in version 7.6 (marked with red).
++
+[.fitrect-4000-4000]
+.Failed test after increasing LibreOffice version from 7.4 to 7.6
+image::../images/4to6.png[width=40%]
+
+[[extension-points]]
+== Extension points
+
+. FODT (Flat Open Document) templates allow including the whole converted content (inserted instead of variable `include` set to `all`) or content defined by special CSS classes like `tag--[entry-point-name]` (inserted instead of variable `include` set to `[entry-point-name]`). More examples are given in `TestContentPoints.kt`. All template content, placed after `process` variable set to `end` is ignored.
+. Unknown HTML tags can be parsed into a generic node with attributes, put in a `Map`.
+This generic node can be replaced with some specific node during the AST transformation.
+. Two types of styles are supported:
+** Output nodes style
++
+The following example stylizes a common table cell. The bottom padding is left with 0 value, because the indent after the in-cell last paragraph will create the necessary padding.
++
+[source,kotlin,indent=0]
+----
+include::../../example/builder/table.main.kts[tag=odt-style]
+----
+** Writers from scratch
++
+In the following example a writer for some custom `PageRef` node is defined. This writer outputs the page number of the referenced element.
++
+[source,kotlin,indent=0]
+----
+include::../../example/ps-118/ps-118.main.kts[tag=ref-page-writer, indent=0]
+----
+. Post-processing.
+In the following example the page and footer parameters are adjusted for an electronic book view.
++
+[source,kotlin,indent=0]
+----
+include::../../example/ps-118/ps-118.main.kts[tag=post-processing]
+----
+. You can also customize everything as in <<customize-everything, this example>>.
+
+[[examples]]
+== Examples
+
+. link:{src-root}/doc/build-doc.main.kts[doc/build-doc.main.kts]
++
+[[mvp-doc]]
+Creates this documentation from the Asciidoc file link:{src-root}/doc/pages/unidoc-publisher.adoc[/doc/pages/unidoc-publisher.adoc].
+. link:{src-root}/example/ps-118/ps-118.main.kts[example/ps-118/ps-118.main.kts]
++
+[[ps-118]]
+Parses HTML-files and unites them into one book of A4 format (link:ps-118.fodt[FODT], link:ps-118.pdf[PDF], link:ps-118.docx[DOCX]), and the electronic book format (link:ps-118-ebook.fodt[FODT], link:ps-118-ebook.pdf[PDF]), adjusting the page layout for each format.
++
+The text contains Holy Father Interpretations for Psalm 118, taken from https://bible.optina.ru/ in the HTML format.
+The site is made with the https://www.dokuwiki.org/[DokuWiki] engine.
+. link:{src-root}/example/builder/table.main.kts[example/builder/table.main.kts]
++
+[[from-scratch]]
+Builds the letter from JSON data and converts it to link:letter.fodt[FODT], link:letter.odt[ODT], link:letter.pdf[PDF] and link:letter.pdf[DOCX] formats.
+Adapted from https://pandoc.org/using-the-pandoc-api.html#builder[Pandoc documentation].
+. link:{src-root}/example/wr/writerside.main.kts[example/builder/writerside.main.kts]
++
+[[writer-side]]
+Converts "`Export to PDF`" page from Writerside tutorial into link:export-to-pdf.fodt[FODT], link:export-to-pdf.odt[ODT], link:export-to-pdf.pdf[PDF] and link:export-to-pdf.docx[DOCX] formats.
+. link:{src-root}/example/customize-everything/customize-everything.main.kts[example/customize-everything/customize-everything.main.kts]
++
+[[customize-everything]]
+Shows, how to customize all parts of the converter: reader (parser), model and writer.
++
+The project has many <<extension-points, extension points>>, so the approach of customizing everything looks excessive in most cases.
+
+To run examples you need the Kotlin compiler. To convert FODT file to PDF, ODT, DOCX format https://github.com/CourseOrchestra/lo-kts-converter[a special LibreOffice wrapper in Kotlin script] is used. But you may do the conversion manually or use any LibreOffice wrapper converter of your choice.
+
+All examples in the current project are built with link:{src-root}/build-all.sh[build-all.sh]
+
+[source,bash]
+----
+include::../../build-doc-examples.sh[tag=body]
+----
+<1> Generating this documentation builder script <<example-cli-help, CLI help>>
+<2> Installing hyphenation `.jar` into a local Maven repository
+
+== License
+
+Copyright 2024 https://t.me/nmpotashnikoff[Nikolaj Potashnikov]
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and limitations under the License.
+
+The software uses the following libraries:
+
+* https://github.com/jhy/jsoup[jsoup], Copyright (c) 2009-2024 Jonathan Hedley, licensed under the MIT license
+* https://github.com/redundent/kotlin-xml-builder[Kotlin XML Builder], Copyright 2015 the original author or authors, licensed under Apache License, Version 2.0
+* https://github.com/FasterXML/jackson[Jackson], licensed under Apache License, Version 2.0

@@ -1,0 +1,26 @@
+content-1
+<root>
+  <text:p
+                    text:style-name="Text body">some text 2
+    <text:span>
+      <style:text-properties/>
+    </text:span>
+  </text:p>
+</root>
+content-2, content-3
+<root>
+  <text:span>
+    <style:text-properties/>
+  </text:span>
+</root>
+all
+<root>
+  <text:p
+                    text:style-name="Text body">some text 1</text:p>
+  <text:p
+                    text:style-name="Text body">some text 2
+    <text:span>
+      <style:text-properties/>
+    </text:span>
+  </text:p>
+</root>

@@ -1,0 +1,27 @@
+!<Document>
+sourceTagName: "body"
+children:
+- !<Table>
+  sourceTagName: "table"
+  children:
+  - !<TableRowGroup>
+    roles:
+    - "tbody"
+    type: "body"
+    children:
+    - !<TableRow>
+      children:
+      - !<TableCell>
+        sourceTagName: "td"
+        colspan: 1
+        rowspan: 1
+        children:
+        - !<Text>
+          text: "A1"
+      - !<TableCell>
+        sourceTagName: "td"
+        colspan: 1
+        rowspan: 1
+        children:
+        - !<Text>
+          text: "A2"

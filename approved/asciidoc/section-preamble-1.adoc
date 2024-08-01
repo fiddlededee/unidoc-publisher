@@ -1,0 +1,8 @@
+= Sample Asciidoc
+:doctype: book
+
+First preamble paragraph
+
+Another preamble paragraph (with smth new)
+
+== Section 1

@@ -1,0 +1,12 @@
+:toc:
+:toclevels: 2
+:sectnums:
+:toc-title: Contents
+
+== Section 1
+
+=== Section 1.1
+
+==== Section 1.1.1
+
+== Section 2

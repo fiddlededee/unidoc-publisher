@@ -1,0 +1,8 @@
+.Example heading
+====
+Some example text
+
+|===
+|And some table
+|===
+====

@@ -1,0 +1,9 @@
+= Sample Asciidoc
+:doctype: book
+
+Some preamble paragraph
+
+[dedication]
+== Dedication
+
+Some dedication paragraph

@@ -1,0 +1,22 @@
+!<Document>
+sourceTagName: "body"
+children:
+- !<Paragraph>
+  sourceTagName: "p"
+  includeTags:
+  - "content-1"
+  - "c2"
+  roles:
+  - "tag--content-1"
+  - "tag--c2"
+  children:
+  - !<Span>
+    sourceTagName: "span"
+    includeTags:
+    - "c3"
+    roles:
+    - "span"
+    - "tag--c3"
+    children:
+    - !<Text>
+      text: "some text"

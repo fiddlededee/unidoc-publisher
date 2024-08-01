@@ -1,0 +1,7 @@
+----
+val a = 1 <1>
+val b = 2 <1>
+println(a + b) <2>
+----
+<1> Setting variable
+<2> Calculating sum

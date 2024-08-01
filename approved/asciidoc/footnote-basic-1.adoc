@@ -1,0 +1,3 @@
+Here is some footnote referencefootnote:some-id[This is a footnote with a *bold* text]
+
+Here is a reference to the same footnotefootnote:some-id[]

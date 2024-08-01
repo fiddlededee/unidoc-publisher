@@ -1,0 +1,9 @@
+Here is some *bold* text
+
+Here is some _italic_ text
+
+Here is some^superscripted^ text
+
+Here is some~subscripted~ text
+
+Here is some `monotyped` text

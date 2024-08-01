@@ -1,0 +1,5 @@
+image:images/asciidoc-icon.png[width=20px] Asciidoc inline icon,
+defined in pixels (20px), here is a long text to make this
+icon fall at least to the second line: image:images/asciidoc-icon.png[width=20px].
+And some text after to have at least third line after this icon,
+just to see how does it influence line spacing.

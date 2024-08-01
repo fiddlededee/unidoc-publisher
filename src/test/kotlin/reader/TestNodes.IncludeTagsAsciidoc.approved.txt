@@ -1,0 +1,35 @@
+!<Document>
+sourceTagName: "body"
+roles:
+- "article"
+children:
+- !<OpenBlock>
+  id: "header"
+  sourceTagName: "div"
+- !<OpenBlock>
+  id: "content"
+  sourceTagName: "div"
+  children:
+  - !<OpenBlock>
+    sourceTagName: "div"
+    includeTags:
+    - "content-1"
+    roles:
+    - "paragraph"
+    - "tag--content-1"
+    children:
+    - !<Paragraph>
+      sourceTagName: "p"
+      children:
+      - !<Text>
+        text: "Some paragraph"
+- !<OpenBlock>
+  id: "footer"
+  sourceTagName: "div"
+  children:
+  - !<OpenBlock>
+    id: "footer-text"
+    sourceTagName: "div"
+    children:
+    - !<Text>
+

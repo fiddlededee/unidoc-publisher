@@ -1,0 +1,4 @@
+This text should be shown. If you don't see text below, the result is correct.
+
+[.tag--hide]
+This text shouldn't be shown

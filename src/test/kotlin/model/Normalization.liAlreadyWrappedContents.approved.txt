@@ -1,0 +1,12 @@
+!<ListItem>
+children:
+- !<Paragraph>
+  children:
+  - !<Text>
+    text: "Некоторый текст"
+  - !<Span>
+    children:
+    - !<Text>
+      text: "и еще"
+    - !<Text>
+      text: " текст"

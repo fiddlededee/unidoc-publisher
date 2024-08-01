@@ -1,0 +1,8 @@
+[.tag--content-1]
+== Tagged section of level 1
+
+== Some section level 1
+
+=== Some section of level 2
+
+Some paragraph with [.tag--content-2]#Tagged text#

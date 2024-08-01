@@ -1,0 +1,9 @@
+[cols="1,2", options=header]
+|===
+^|Content type ^|The result
+|center aligned ^|[.row-background-color-red]#Red#
+|right aligned >|[.row-background-color-orange]#Orange#
+|center aligned both horizontally and vertically ^.^|[.row-background-color-yellow]#Yellow#
+|right aligned horizontally, bottom aligned vertically >.>|[.row-background-color-green]#Green#
+|the whole row is blue |[.row-background-color-blue]#Blue#
+|===

@@ -1,0 +1,16 @@
+.Some list:
+* Item 1
++
+Some paragraph
+
+** Item 2
++
+|===
+|cell 1 |cell 2
+|===
+
+*** Item 3
++
+TIP: Some tip
+
+Paragraph after the list

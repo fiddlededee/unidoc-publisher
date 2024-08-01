@@ -1,0 +1,14 @@
+.SrcDpi (300) defines dimensions
+[.srcdpi-300.fitrect-17000-25000]
+image::images/svg-example.svg[width=30%]
+
+.Fitrect width (90mm) defines dimensions
+[.srcdpi-300.fitrect-8000-25000]
+image::images/svg-example.svg[width=50%]
+
+.Fitrect height (20mm) defines dimensions
+[.srcdpi-300.fitrect-17000-2000]
+image::images/svg-example.svg[width=50%]
+
+.Width (50%) defines dimensions
+image::images/svg-example.svg[width=50%]

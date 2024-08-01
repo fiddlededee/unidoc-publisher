@@ -1,0 +1,4 @@
+[.fitrect-17000-500]
+This label height should be exactly 5mm in height: image:images/ehjnem.png[width=100px]. Width is ignored
+
+This label width should be exactly 100px (assuming 96 dpi resolution): image:images/ehjnem.png[width=100px]

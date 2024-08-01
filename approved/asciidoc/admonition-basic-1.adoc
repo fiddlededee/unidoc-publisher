@@ -1,0 +1,9 @@
+TIP: Simple tip
+
+[WARNING]
+.Warning title
+====
+Complex warning
+
+And another paragraph
+====

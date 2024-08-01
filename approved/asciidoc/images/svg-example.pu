@@ -1,0 +1,10 @@
+@startuml
+skinparam backgroundcolor transparent
+skinparam dpi 300
+left to right direction
+[First component] as c1
+[Second component] as c2
+[Third component] as c3
+c1 --> c3
+c2 --> c3
+@enduml

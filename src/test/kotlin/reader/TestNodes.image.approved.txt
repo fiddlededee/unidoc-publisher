@@ -1,0 +1,9 @@
+!<Document>
+sourceTagName: "body"
+children:
+- !<Image>
+  src: "my-images/image.png"
+  width:
+    value: 10.0
+    unit: "pt"
+  anchorType: "ASCHAR"
