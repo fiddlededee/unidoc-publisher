@@ -1,0 +1,21 @@
+name: GH Pages
+on: 
+  push:
+    branches: [main]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+      - name: Unzip doc
+        run: unzip doc-output.zip
+      - name: GitHub Pages
+        if: success() && github.ref == 'refs/heads/main'
+        uses: crazy-max/ghaction-github-pages@v2.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          build_dir: doc-output
