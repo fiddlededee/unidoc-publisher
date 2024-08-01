@@ -34,15 +34,16 @@ FodtConverter {
     html = AsciidocHtmlFactory
         .getHtmlFromFile(File(CliOptions.adocFile)) // <3>
     odtStyleList.add(rougeStyles()) // <4>
-    parse() // <5>
-    if (CliOptions.logo != null) addLogoToAst() // <6>
-    ast2fodt() // <7>
-    if (CliOptions.checkSpelling) checkSpelling() // <8>
+    odtStyleList.add(indentPreamble()) // <5>
+    parse() // <6>
+    if (CliOptions.logo != null) addLogoToAst() // <7>
+    ast2fodt() // <8>
+    if (CliOptions.checkSpelling) checkSpelling() // <9>
     CliOptions.htmlOutput
-        ?.let { File(it).writeText(html()) } // <9>
+        ?.let { File(it).writeText(html()) } // <10>
     CliOptions.yamlOutput
-        ?.let { File(it).writeText(ast().toYamlString()) } // <10>
-    File(CliOptions.fodtOutput).writeText(fodt()) // <11>
+        ?.let { File(it).writeText(ast().toYamlString()) } // <11>
+    File(CliOptions.fodtOutput).writeText(fodt()) // <12>
 }
 // end::body[]
 
@@ -93,6 +94,16 @@ fun FodtConverter.addLogoToAst() {
     odtStyleList.add(imageStyleList)
 }
 
+fun indentPreamble(): OdtStyleList {
+    return OdtStyleList(
+        OdtStyle { preamble ->
+            if (preamble !is Paragraph ||
+                preamble.ancestor { it.id == "preamble" }.isEmpty()
+            ) return@OdtStyle
+            paragraphProperties { attributes("fo:margin-top" to "12pt") }
+        }
+    )
+}
 
 fun rougeStyles(): OdtStyleList {
     val css = CSSReader.readFromFile(

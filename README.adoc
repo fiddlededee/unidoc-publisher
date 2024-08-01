@@ -1,0 +1,27 @@
+= UniDoc Publisher
+
+UniDoc Publisher is a highly customizable Kotlin library that provides a comprehensive set of tools to parse HTML files into an abstract syntax tree (AST), transform it in any desirable way and render the Open Document flat format (FODT). The latter you can convert to PDF or DOCX with LibreOffice.
+
+== Status
+
+|===
+|Maven Central |https://central.sonatype.com/artifact/ru.fiddlededee/unidoc-publisher[Version 0.7.0]
+|===
+
+== Documentation
+
+* https://fiddlededee.github.io/unidoc-publisher/[GitHub Pages]
+* https://fiddlededee.github.io/unidoc-publisher/unidoc-publisher-doc.pdf[PDF]
+* https://fiddlededee.github.io/unidoc-publisher/unidoc-publisher-doc.odt[ODT]
+* https://fiddlededee.github.io/unidoc-publisher/unidoc-publisher-doc.fodt[FODT]
+* https://fiddlededee.github.io/unidoc-publisher/unidoc-publisher-doc.docx[DOCX]
+
+== License
+
+Copyright 2024 https://t.me/nmpotashnikoff[Nikolaj Potashnikov]
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+

@@ -80,7 +80,7 @@ publishing {
                 description = """
                             UniDoc Publisher is a highly customizable Kotlin library that 
                             provides a comprehensive set of tools to parse HTML files into 
-                            abstract syntax tree (AST), transform it in any desirable way 
+                            an abstract syntax tree (AST), transform it in any desirable way 
                             and render the Open Document flat format (FODT)
                         """.trimIndent()
                 url = "https://github.com/fiddlededee/unidoc-publisher"
