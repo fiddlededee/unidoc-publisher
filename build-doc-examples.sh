@@ -8,9 +8,10 @@ kotlin doc/build-doc.main.kts \
   --template approved/asciidoc/template-1.fodt \
   --fodt-output doc/output/unidoc-publisher-doc.fodt \
   --yaml-output doc/output/unidoc-publisher-doc.yaml \
-  --html-output doc/output/unidoc-publisher-doc.html \
+  --html-output doc/output/index.html \
   --logo doc/images/unidoc-processor-symbol.svg \
   --check-spelling
+cp doc/images -r doc-output
 lo-kts-converter/lo-kts-converter.main.kts \
   -i doc/output/unidoc-publisher-doc.fodt -f pdf,odt,docx
 

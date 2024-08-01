@@ -14,9 +14,7 @@ import com.helger.css.reader.CSSReader
 import common.AsciidoctorAdapter
 import converter.FodtConverter
 import model.*
-import org.asciidoctor.Asciidoctor
-import org.asciidoctor.Options
-import org.asciidoctor.SafeMode
+import org.asciidoctor.*
 import org.languagetool.JLanguageTool
 import org.languagetool.language.AmericanEnglish
 import org.languagetool.rules.spelling.SpellingCheckRule
@@ -37,16 +35,14 @@ FodtConverter {
         .getHtmlFromFile(File(CliOptions.adocFile)) // <3>
     odtStyleList.add(rougeStyles()) // <4>
     parse() // <5>
-    ast().descendant { it is Image }.map {it as Image}
-        .forEach { it.src = "doc/pages/${it.src}" } // <6>
-    if (CliOptions.logo != null) addLogoToAst() // <7>
-    ast2fodt() // <8>
-    if (CliOptions.checkSpelling) checkSpelling() // <9>
+    if (CliOptions.logo != null) addLogoToAst() // <6>
+    ast2fodt() // <7>
+    if (CliOptions.checkSpelling) checkSpelling() // <8>
     CliOptions.htmlOutput
-        ?.let { File(it).writeText(html()) } // <10>
+        ?.let { File(it).writeText(html()) } // <9>
     CliOptions.yamlOutput
-        ?.let { File(it).writeText(ast().toYamlString()) } // <11>
-    File(CliOptions.fodtOutput).writeText(fodt()) // <12>
+        ?.let { File(it).writeText(ast().toYamlString()) } // <10>
+    File(CliOptions.fodtOutput).writeText(fodt()) // <11>
 }
 // end::body[]
 
@@ -64,7 +60,9 @@ object AsciidocHtmlFactory {
     private val factory: Asciidoctor = Asciidoctor.Factory.create()
     fun getHtmlFromFile(file: File): String = factory.convertFile(
         file,
-        Options.builder().backend("html5").sourcemap(true).safe(SafeMode.UNSAFE).toFile(false).standalone(true).build()
+        Options.builder().backend("html5").sourcemap(true).safe(SafeMode.UNSAFE)
+            .toFile(false).standalone(true)
+            .attributes(Attributes.builder().attribute("data-uri").build())
     )
 }
 
@@ -191,6 +189,7 @@ fun String.langToolsCheck() {
                 "HTML",
                 "DOCX",
                 "AST",
+                "JOD",
                 "Nikolaj",
                 "Potashnikov",
                 "templating",
@@ -198,7 +197,7 @@ fun String.langToolsCheck() {
                 "DokuWiki",
                 "runnable",
                 "Writerside",
-                "Headley"
+                "Hedley"
             ), ignore = arrayOf(
             )
         )

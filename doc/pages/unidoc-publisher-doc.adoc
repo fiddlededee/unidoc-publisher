@@ -2,12 +2,14 @@
 :toc: left
 :source-highlighter: rouge
 :src-root: https://github.com/fiddlededee/unidoc-publisher/blob/main
+:doc-root: ..
+:doc-ghpages-root: https://fiddlededee.github.io/unidoc-publisher
 
 == How to run
 
 Uni-Doc Publisher is just a `.jar`, published to https://central.sonatype.com/[Maven Central]. The most common way to use it is from Kotlin script or as a part of a gradle pipeline that is almost the same.
 
-As an example you may download link:{src-root}/doc/build-doc.kts[the Kotlin script file]. It is used to build the current documentation (prerequisites: Java 11+ and Kotlin 19+). The script runs with the following CLI parameters.
+As an example you may download link:{src-root}/doc/build-doc.main.kts[the Kotlin script file]. It is used to build the current documentation (prerequisites: Java 11+ and Kotlin 19+). The script runs with the following CLI parameters.
 
 [[example-cli-help]]
 ----
@@ -24,13 +26,12 @@ include::../../doc/build-doc.main.kts[tag=body,indent=0]
 <3> Converting source file from Asciidoc to HTML
 <4> Adding rouge styles for highlighting code in addition to basic styles from `AsciidoctorAdapter`
 <5> Parsing HTML into AST
-<6> Correcting image relative paths
-<7> Adding logo to AST if necessary
-<8> Converting AST to FODT
-<9> Checking spelling if necessary
-<10> Outputting HTML if necessary
-<11> Outputting AST as YAML if necessary
-<12> Outputting FODT
+<6> Adding logo to AST if necessary
+<7> Converting AST to FODT
+<8> Checking spelling if necessary
+<9> Outputting HTML if necessary
+<10> Outputting AST as YAML if necessary
+<11> Outputting FODT
 
 [WARNING]
 ====
@@ -54,7 +55,7 @@ UniDoc Publisher has been designed with ease of use in mind, you can focus on ge
 
 UniDoc Publisher supersedes https://github.com/CourseOrchestra/asciidoctor-open-document[Open Document converter for Asciidoctor]. Despite it is now designed to publish any text markup, https://docs.asciidoctor.org/asciidoc/latest/[Asciidoc] IMHO is the best and most universal simple text markup with a very well-designed and extensible converter (https://docs.asciidoctor.org/asciidoctor/latest/[Asciidoctor]), large ecosystem and a great community.
 
-The prefix `Uni` means UniDoc Publisher (1) is quite [green]##**uni**##versal (almost all markups can output HTML) and `(2) can [green]##**uni**##te several sources of documentation.
+The prefix `Uni` means UniDoc Publisher (1) is quite [green]##**uni**##versal (almost all markups can output HTML) and (2) can [green]##**uni**##te several sources of documentation.
 
 
 == The main features of UniDoc Publisher
@@ -128,7 +129,7 @@ If you would like to use LibreOffice (LO) Writer for publishing consider the fol
 +
 [.fitrect-4000-4000]
 .Failed test after increasing LibreOffice version from 7.4 to 7.6
-image::../images/4to6.png[width=40%]
+image::{doc-root}/images/4to6.png[width=40%]
 
 [[extension-points]]
 == Extension points
@@ -168,23 +169,23 @@ include::../../example/ps-118/ps-118.main.kts[tag=post-processing]
 . link:{src-root}/doc/build-doc.main.kts[doc/build-doc.main.kts]
 +
 [[mvp-doc]]
-Creates this documentation from the Asciidoc file link:{src-root}/doc/pages/unidoc-publisher.adoc[/doc/pages/unidoc-publisher.adoc].
+Creates this documentation from the Asciidoc file link:{src-root}/doc/pages/unidoc-publisher-doc.adoc[/doc/pages/unidoc-publisher.adoc].
 . link:{src-root}/example/ps-118/ps-118.main.kts[example/ps-118/ps-118.main.kts]
 +
 [[ps-118]]
-Parses HTML-files and unites them into one book of A4 format (link:ps-118.fodt[FODT], link:ps-118.pdf[PDF], link:ps-118.docx[DOCX]), and the electronic book format (link:ps-118-ebook.fodt[FODT], link:ps-118-ebook.pdf[PDF]), adjusting the page layout for each format.
+Parses HTML-files and unites them into one book of A4 format (link:{doc-ghpages-root}/ps-118.fodt[FODT], link:{doc-ghpages-root}/ps-118.pdf[PDF], link:{doc-ghpages-root}/ps-118.docx[DOCX]), and the electronic book format (link:{doc-ghpages-root}/ps-118-ebook.fodt[FODT], link:{doc-ghpages-root}/ps-118-ebook.pdf[PDF]), adjusting the page layout for each format.
 +
 The text contains Holy Father Interpretations for Psalm 118, taken from https://bible.optina.ru/ in the HTML format.
 The site is made with the https://www.dokuwiki.org/[DokuWiki] engine.
 . link:{src-root}/example/builder/table.main.kts[example/builder/table.main.kts]
 +
 [[from-scratch]]
-Builds the letter from JSON data and converts it to link:letter.fodt[FODT], link:letter.odt[ODT], link:letter.pdf[PDF] and link:letter.pdf[DOCX] formats.
+Builds the letter from JSON data and converts it to link:{doc-ghpages-root}/letter.fodt[FODT], link:{doc-ghpages-root}/letter.odt[ODT], link:{doc-ghpages-root}/letter.pdf[PDF] and link:{doc-ghpages-root}/letter.pdf[DOCX] formats.
 Adapted from https://pandoc.org/using-the-pandoc-api.html#builder[Pandoc documentation].
-. link:{src-root}/example/wr/writerside.main.kts[example/builder/writerside.main.kts]
+. link:{src-root}/example/writerside-tutorial/writerside.main.kts[example/builder/writerside.main.kts]
 +
 [[writer-side]]
-Converts "`Export to PDF`" page from Writerside tutorial into link:export-to-pdf.fodt[FODT], link:export-to-pdf.odt[ODT], link:export-to-pdf.pdf[PDF] and link:export-to-pdf.docx[DOCX] formats.
+Converts "`Export to PDF`" page from Writerside tutorial into link:{doc-ghpages-root}/export-to-pdf.fodt[FODT], link:{doc-ghpages-root}/export-to-pdf.odt[ODT], link:{doc-ghpages-root}/export-to-pdf.pdf[PDF] and link:{doc-ghpages-root}/export-to-pdf.docx[DOCX] formats.
 . link:{src-root}/example/customize-everything/customize-everything.main.kts[example/customize-everything/customize-everything.main.kts]
 +
 [[customize-everything]]
@@ -192,9 +193,9 @@ Shows, how to customize all parts of the converter: reader (parser), model and w
 +
 The project has many <<extension-points, extension points>>, so the approach of customizing everything looks excessive in most cases.
 
-To run examples you need the Kotlin compiler. To convert FODT file to PDF, ODT, DOCX format https://github.com/CourseOrchestra/lo-kts-converter[a special LibreOffice wrapper in Kotlin script] is used. But you may do the conversion manually or use any LibreOffice wrapper converter of your choice.
+To run examples you need the Kotlin compiler. To convert FODT file to PDF, ODT, DOCX format https://github.com/CourseOrchestra/lo-kts-converter[a Kotlin script LibreOffice wrapper] is used. But you may do the conversion manually or use any LibreOffice wrapper converter of your choice like https://github.com/jodconverter[JOD Converter].
 
-All examples in the current project are built with link:{src-root}/build-all.sh[build-all.sh]
+All examples in the current project are built with link:{src-root}/build-doc-examples.sh[build-doc-examples.sh]
 
 [source,bash]
 ----
@@ -218,5 +219,5 @@ See the License for the specific language governing permissions and limitations 
 The software uses the following libraries:
 
 * https://github.com/jhy/jsoup[jsoup], Copyright (c) 2009-2024 Jonathan Hedley, licensed under the MIT license
-* https://github.com/redundent/kotlin-xml-builder[Kotlin XML Builder], Copyright 2015 the original author or authors, licensed under Apache License, Version 2.0
-* https://github.com/FasterXML/jackson[Jackson], licensed under Apache License, Version 2.0
+* https://github.com/redundent/kotlin-xml-builder[Kotlin XML Builder], Copyright 2015 the original author or authors, licensed under the Apache License, Version 2.0
+* https://github.com/FasterXML/jackson[Jackson], licensed under the Apache License, Version 2.0
