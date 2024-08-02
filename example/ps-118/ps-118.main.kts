@@ -122,7 +122,6 @@ parsedFiles.forEach { parsedFile ->
         // Level one headers updated: Page refs and header TOC added
         ast.descendant { it is Header && it.level == 1 }.map { it as Header }.forEach h1@{ headerLevel1 ->
             val verseNum = interpretationsReference(pageId)?.part4?.toInt() ?: 0
-            headerLevel1.span { roles.add("page-ref"); +" ["; pageRef("old_ps_118_start_$verseNum"); +"]" }
             headerLevel1.insertAfter(Paragraph()).apply {
                 roles.add("sub-toc")
                 ast.descendant { it is Header && it.level == 2 }.forEachIndexed h2@{ index, headerLevel2 ->
