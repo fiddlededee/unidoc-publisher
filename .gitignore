@@ -6,6 +6,7 @@ doc/output
 doc/auto*/*
 !doc/auto*/README
 gradle.properties
+approved/asciidoc/test-case
 
 .gradle
 build/
@@ -50,4 +51,3 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-

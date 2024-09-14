@@ -84,10 +84,14 @@ fun Node.normalizeImageDimensions(portraitWidth: Float = 17000F, basicDpi: Float
                 else -> {}
             }
         }
-        if (imageHeight == null && imageWidth != null) {
+        if (imageHeight == null) {
             val imageMeta = imageMeta(image.src)
-            val proportionalHeight = imageWidth.value / imageMeta.width * imageMeta.height
-            image.height = Length(proportionalHeight, imageWidth.unit)
+            val newImageWidth = run {
+                imageWidth ?: Length(imageMeta.width / basicDpi * 2540F, LengthUnit.mmm)
+            }
+            image.width = newImageWidth
+            val proportionalHeight = newImageWidth.value / imageMeta.width * imageMeta.height
+            image.height = Length(proportionalHeight, newImageWidth.unit)
         }
     }
 }
