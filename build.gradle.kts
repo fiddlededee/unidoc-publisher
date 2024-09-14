@@ -16,7 +16,7 @@ repositories {
 }
 
 group = "ru.fiddlededee"
-version = "0.7.1"
+version = "0.7.2"
 val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
 
 dependencies {

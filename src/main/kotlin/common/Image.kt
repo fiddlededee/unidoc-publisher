@@ -18,7 +18,7 @@ fun imageMeta(src: String): ImageMeta {
     val matchResult = base64Regex.matchEntire(src)
     val type = if (matchResult == null) src.substringAfterLast('.', "") else
         matchResult.groupValues[1]
-    return if (type == "svg") svgImageMeta(matchResult, src) else
+    return if (type == "svg" || type == "svg+xml") svgImageMeta(matchResult, src) else
         binaryImageMeta(matchResult, src)
 }
 
