@@ -40,10 +40,10 @@ fun String.asciidoc2PdfApprove(key: String, tune: FodtConverter.() -> Unit = {})
             if (!base64Regex.matches(image.src)) image.src =
                 "approved/asciidoc/${image.src}"
         }
-//        File("temp/ast-transformed.yaml").writeText(ast().toYamlString())
         ast
         if (preList.isEmpty()) generatePre()
         if (fodt == null) generateFodt()
+//        File("temp/ast-transformed.yaml").writeText(ast().toYamlString())
 //        File("temp/fodt.fodt").writeText(fodt())
         File("approved/asciidoc/${key}.received.fodt").writeText(fodt())
         Lo.fodtToPdf("approved/asciidoc/${key}.received.fodt")

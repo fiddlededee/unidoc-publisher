@@ -1,0 +1,3 @@
+.Should be slightly more than 2 inches, as the image is 225x225 pixels
+image::images/asciidoc-icon.png[]
+

@@ -14,6 +14,7 @@ class TestNoTuning {
             "admonition-basic-1",
             "example-basic-1",
             "footnote-basic-1",
+            "image-block-no-dimensions-1",
             "image-block-percent-base64-1",
             "image-inline-pixel-1",
             "image-inline-fitrect-1",
