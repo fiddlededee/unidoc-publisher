@@ -47,7 +47,7 @@ class TestNodes {
                 Some paragraph
             """.trimIndent().asciidocAsHtml()
             xpath = "/html/body"
-            unknownTagProcessingRule = AsciidoctorAdapter.unkonwnTagProcessingRule
+            unknownTagProcessingRule = AsciidoctorAdapter.unknownTagProcessingRule
             println(html)
             parse()
             ast?.toYamlString()!!

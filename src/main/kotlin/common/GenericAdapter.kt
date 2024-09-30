@@ -6,7 +6,7 @@ import reader.UnknownTagProcessing
 import writer.OdtStyleList
 
 interface GenericAdapter {
-    val unkonwnTagProcessingRule: HtmlNode.() -> UnknownTagProcessing
+    val unknownTagProcessingRule: HtmlNode.() -> UnknownTagProcessing
     fun basicStyle(): OdtStyleList
     fun Node.normalizeAll() {}
 }

@@ -28,7 +28,7 @@ object AsciidoctorAdapter : GenericAdapter {
 
     enum class AdmonitionCellType { TYPE_CONTENT, CONTENT }
 
-    override val unkonwnTagProcessingRule: HtmlNode.() -> UnknownTagProcessing = {
+    override val unknownTagProcessingRule: HtmlNode.() -> UnknownTagProcessing = {
         if (classNames().intersect(
                 setOf(
                     "listingblock",
