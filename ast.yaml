@@ -1,0 +1,525 @@
+!<Document>
+sourceTagName: "article"
+roles:
+- "article"
+children:
+- !<Header>
+  id: "export-to-pdf.topic"
+  sourceTagName: "h1"
+  level: 1
+  children:
+  - !<Text>
+    text: "Export to PDF"
+- !<Paragraph>
+  id: "-n8h0lc_9"
+  sourceTagName: "p"
+  children:
+  - !<Text>
+    text: "Writerside can generate a PDF from your documentation sources. The PDF\
+      \ will contain a table of contents with the page numbers and an optional cover\
+      \ page. It can also have some custom text in the header and footer of every\
+      \ page."
+- !<Paragraph>
+  roles:
+  - "paragraph-before-section"
+- !<OpenBlock>
+  id: "-n8h0lc_3"
+  sourceTagName: "section"
+  roles:
+  - "procedure-steps"
+  children:
+  - !<OrderedList>
+    children:
+    - !<ListItem>
+      children:
+      - !<Paragraph>
+        sourceTagName: "p"
+        children:
+        - !<Text>
+          text: " In the  "
+        - !<Span>
+          id: "-n8h0lc_51"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Writerside"
+        - !<Text>
+          text: " tool window, click "
+        - !<Image>
+          src: "https://resources.jetbrains.com/help/img/writerside/export.svg"
+          width:
+            value: 16.0
+            unit: "parrots"
+          height:
+            value: 16.0
+            unit: "parrots"
+          anchorType: "ASCHAR"
+        - !<Span>
+          id: "-n8h0lc_47"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Export To"
+        - !<Text>
+          text: " and then select "
+        - !<Span>
+          id: "-n8h0lc_43"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "PDF"
+        - !<Text>
+          text: ". "
+      - !<OpenBlock>
+        id: "-n8h0lc_17"
+        sourceTagName: "figure"
+        children:
+        - !<Image>
+          src: "https://resources.jetbrains.com/help/img/writerside/build-pdf-action.png"
+          width:
+            value: 675.0
+            unit: "parrots"
+          height:
+            value: 182.0
+            unit: "parrots"
+          anchorType: "ASCHAR"
+    - !<ListItem>
+      children:
+      - !<Paragraph>
+        id: "-n8h0lc_18"
+        sourceTagName: "p"
+        children:
+        - !<Text>
+          text: "In the "
+        - !<Span>
+          id: "-n8h0lc_21"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Edit Configurations Settings"
+        - !<Text>
+          text: " dialog, you can change the following settings:"
+      - !<OpenBlock>
+        id: "-n8h0lc_19"
+        sourceTagName: "dl"
+        children:
+        - !<OpenBlock>
+          id: "-n8h0lc_22"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Name"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "Specify a meaningful name to differentiate between several configurations\
+                \ if you have more than one."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+        - !<OpenBlock>
+          id: "-n8h0lc_23"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Instance"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "Select the "
+            - !<Anchor>
+              href: "instances.html"
+              children:
+              - !<Text>
+                text: "instance"
+            - !<Text>
+              text: ". By default, the configuration will produce a PDF for the instance\
+                \ selected in the  "
+            - !<Span>
+              id: "-n8h0lc_53"
+              sourceTagName: "span"
+              roles:
+              - "span"
+              - "control"
+              children:
+              - !<Text>
+                text: "Writerside"
+            - !<Text>
+              text: " tool window."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+        - !<OpenBlock>
+          id: "-n8h0lc_24"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Save to"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "Specify the directory where you want to save the generated PDF.\
+                \ By default, it will be saved to the root of your "
+            - !<Anchor>
+              href: "projects.html"
+              children:
+              - !<Text>
+                text: "documentation project"
+            - !<Text>
+              text: "."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+        - !<OpenBlock>
+          id: "-n8h0lc_25"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Keymap"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "If you have several "
+            - !<Anchor>
+              href: "shortcuts.html#reference-from-keymap-file"
+              children:
+              - !<Text>
+                text: "keymaps"
+            - !<Text>
+              text: " defined, select the one that will be used in this PDF."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+        - !<OpenBlock>
+          id: "-n8h0lc_26"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Orientation"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "Select between "
+            - !<Span>
+              id: "-n8h0lc_34"
+              sourceTagName: "span"
+              roles:
+              - "span"
+              - "control"
+              children:
+              - !<Text>
+                text: "Portrait"
+            - !<Text>
+              text: " and "
+            - !<Span>
+              id: "-n8h0lc_35"
+              sourceTagName: "span"
+              roles:
+              - "span"
+              - "control"
+              children:
+              - !<Text>
+                text: "Landscape"
+            - !<Text>
+              text: " page orientation."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+        - !<OpenBlock>
+          id: "-n8h0lc_27"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Cover page"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "Add a cover page to the PDF output. Without it, the PDF will\
+                \ start with the table of contents as the first page. On the cover\
+                \ page, you can add a title, logo image, description, and a copyright."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+        - !<OpenBlock>
+          id: "-n8h0lc_28"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Header"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "Specify the text that will be used in the header of every page."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+        - !<OpenBlock>
+          id: "-n8h0lc_29"
+          sourceTagName: "dt"
+          children:
+          - !<Paragraph>
+            children:
+            - !<Text>
+              text: "Footer"
+        - !<OpenBlock>
+          sourceTagName: "dd"
+          children:
+          - !<Paragraph>
+            sourceTagName: "p"
+            children:
+            - !<Text>
+              text: "Specify the text that will be used in the footer of every page."
+        - !<Paragraph>
+          roles:
+          - "paragraph-after-definition"
+      - !<OpenBlock>
+        id: "-n8h0lc_20"
+        sourceTagName: "figure"
+        children:
+        - !<Image>
+          src: "https://resources.jetbrains.com/help/img/writerside/generate-pdf-run-config.png"
+          width:
+            value: 692.0
+            unit: "parrots"
+          height:
+            value: 643.0
+            unit: "parrots"
+          anchorType: "ASCHAR"
+    - !<ListItem>
+      children:
+      - !<Paragraph>
+        sourceTagName: "p"
+        children:
+        - !<Text>
+          text: "Click "
+        - !<Span>
+          id: "-n8h0lc_36"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Run"
+        - !<Text>
+          text: " to start this run configuration."
+    - !<ListItem>
+      children:
+      - !<Paragraph>
+        sourceTagName: "p"
+        children:
+        - !<Text>
+          text: "After a successful build, check the output for errors and warnings\
+            \ in the "
+        - !<Span>
+          id: "-n8h0lc_37"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Run"
+        - !<Text>
+          text: " tool window. If everything is fine, you will see links to the generated\
+            \ HTML and PDF files."
+- !<Paragraph>
+  roles:
+  - "paragraph-after-section"
+- !<Paragraph>
+  id: "-n8h0lc_4"
+  sourceTagName: "p"
+  children:
+  - !<Text>
+    text: "You can create multiple run configurations to quickly generate PDFs for\
+      \ various "
+  - !<Anchor>
+    href: "instances.html"
+    children:
+    - !<Text>
+      text: "instances"
+  - !<Text>
+    text: " or the same instance with different keymaps, headers, and footers."
+- !<Paragraph>
+  id: "-n8h0lc_5"
+  sourceTagName: "p"
+  children:
+  - !<Text>
+    text: "Run them from the configurations widget in the main toolbar:"
+- !<OpenBlock>
+  id: "-n8h0lc_6"
+  sourceTagName: "figure"
+  children:
+  - !<Image>
+    src: "https://resources.jetbrains.com/help/img/writerside/run-configurations-widget.png"
+    width:
+      value: 303.0
+      unit: "parrots"
+    height:
+      value: 220.0
+      unit: "parrots"
+    anchorType: "ASCHAR"
+- !<Paragraph>
+  roles:
+  - "paragraph-before-section"
+- !<OpenBlock>
+  sourceTagName: "section"
+  roles:
+  - "procedure-steps"
+  children:
+  - !<Header>
+    id: "add_more_run_configurations"
+    sourceTagName: "h3"
+    level: 3
+    children:
+    - !<Text>
+      text: "Add more run configurations"
+  - !<OrderedList>
+    children:
+    - !<ListItem>
+      children:
+      - !<Paragraph>
+        sourceTagName: "p"
+        children:
+        - !<Text>
+          text: "Click "
+        - !<Span>
+          id: "-n8h0lc_56"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Edit Configurations"
+        - !<Text>
+          text: " in the main toolbar widget or select "
+        - !<Span>
+          id: "-n8h0lc_57"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "menupath"
+          children:
+          - !<Text>
+            text: "Run | Edit Configurations"
+        - !<Text>
+          text: " from the main menu."
+    - !<ListItem>
+      children:
+      - !<Paragraph>
+        sourceTagName: "p"
+        children:
+        - !<Text>
+          text: "In the "
+        - !<Span>
+          id: "-n8h0lc_58"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Run/Debug Configurations"
+        - !<Text>
+          text: " dialog, click "
+        - !<Image>
+          src: "https://resources.jetbrains.com/help/img/writerside/icon_add.png"
+          width:
+            value: 28.0
+            unit: "parrots"
+          height:
+            value: 28.0
+            unit: "parrots"
+          anchorType: "ASCHAR"
+        - !<Span>
+          id: "-n8h0lc_60"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Add New Configuration"
+        - !<Text>
+          text: " and add a new "
+        - !<Span>
+          id: "-n8h0lc_61"
+          sourceTagName: "span"
+          roles:
+          - "span"
+          - "control"
+          children:
+          - !<Text>
+            text: "Writerside"
+        - !<Text>
+          text: " configuration."
+- !<Paragraph>
+  roles:
+  - "paragraph-after-section"
+- !<Text>
+  text: "Last modified: 30 July 2024"
+- !<Anchor>
+  href: "custom-search-service.html"
+  children:
+  - !<Text>
+    text: "Custom search service"
+- !<Anchor>
+  href: "git-integration.html"
+  children:
+  - !<Text>
+    text: "Git integration"
