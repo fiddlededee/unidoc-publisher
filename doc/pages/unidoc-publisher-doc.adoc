@@ -91,7 +91,7 @@ include::../../example/builder/table.main.kts[tag=letter-builder]
 
 === Kotlin script as the main automation language
 
-* Kotlin script may be used a standalone runnable file, that contains dependency declarations.
+* Kotlin script may be used as a standalone runnable file, that contains dependency declarations.
 It can be run with the command `kotlin [Kotlin script file]`.
 
 * Kotlin is a statically typed language.
