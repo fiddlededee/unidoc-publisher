@@ -1,4 +1,4 @@
-./gradlew publishToMavenLocal
+./gradlew build publishToMavenLocal
 # tag::body[]
 echo build-doc
 kotlin doc/build-doc.main.kts -h > doc/autopartials/example-cli-help.txt # <1>

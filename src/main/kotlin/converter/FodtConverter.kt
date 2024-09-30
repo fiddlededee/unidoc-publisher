@@ -1,6 +1,5 @@
 package converter
 
-import common.AsciidoctorAdapter.normalizeAll
 import common.GenericAdapter
 import fodt.FodtGenerator
 import model.Document
@@ -15,7 +14,7 @@ import writer.OdtStyleList
 open class FodtConverter(init: FodtConverter.() -> Unit) {
     private var adapter: GenericAdapter? = null
     fun adaptWith(adapter: GenericAdapter) {
-        unknownTagProcessingRule = adapter.unkonwnTagProcessingRule
+        unknownTagProcessingRule = adapter.unknownTagProcessingRule
         odtStyleList = adapter.basicStyle()
         this.adapter = adapter
     }
@@ -73,8 +72,8 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
     }
 
     fun generatePre() {
-        if (adapter != null) adapter.apply { ast().normalizeAll() }
         val localAst = ast ?: throw Exception("Ast is null")
+        adapter?.apply { localAst.normalizeAll() }
         (localAst.descendant { it.includeTags.isNotEmpty() } +
                 localAst
                 ).forEach { nodeToProcess ->
