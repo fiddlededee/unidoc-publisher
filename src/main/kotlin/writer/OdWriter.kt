@@ -208,9 +208,14 @@ open class OdWriter(
                 }
                 val id = p.id
                 if (id != null) {
-                    "text:bookmark" { attribute("text:name", id) }
-                }
-                process(p)
+                    "text:bookmark-start" {
+                        attribute("text:name", id)
+                    }
+                    process(p)
+                    "text:bookmark-end" {
+                        attribute("text:name", id)
+                    }
+                } else process(p)
             }
         }
     }
@@ -258,7 +263,7 @@ open class OdWriter(
                         textChunk = ""
                         "text:line-break" { }
                     } else {
-                       textChunk += character
+                        textChunk += character
                     }
                 } else {
                     if (spacesNum > 0) {
