@@ -254,12 +254,19 @@ object AsciidoctorAdapter : GenericAdapter {
     fun Node.wrapTitleInlineContent() {
         this.descendant { it is OpenBlock && it.roles.contains("title") }
             .forEach { openBlock ->
-                val parent = openBlock.parent()
-                if (parent != null && parent is Table) {
-                    parent.insertBefore(openBlock)
+                openBlock.wrapNodeInlineContents()
+                val table = openBlock.parent()
+                if (table != null && table is Table) {
+                    val tableId = table.id
+                    if (tableId != null) {
+                        openBlock.descendant { it is Paragraph }.firstOrNull()?.apply {
+                            id = tableId
+                        }
+                        table.id = "table--${tableId}"
+                    }
+                    table.insertBefore(openBlock)
                     openBlock.roles("table-title")
                 }
-                openBlock.wrapNodeInlineContents()
             }
     }
 
@@ -392,11 +399,16 @@ object AsciidoctorAdapter : GenericAdapter {
             image is Image &&
                     image.ancestor { it.roles.contains("imageblock") }
                         .isNotEmpty()
-        }.forEach {
+        }.forEach { image ->
+            val imageBlock = image.ancestor { it.roles.contains("imageblock") }.firstOrNull()
             val p =
                 Paragraph().apply { roles("imageblock-paragraph") }
-            it.insertAfter(p)
-            p.appendChild(it)
+            if (imageBlock?.id != null) {
+                p.id = imageBlock.id
+                imageBlock.id = "image-block--${imageBlock.id}"
+            }
+            image.insertAfter(p)
+            p.appendChild(image)
         }
     }
 
