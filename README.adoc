@@ -5,7 +5,7 @@ UniDoc Publisher is a highly customizable Kotlin library that provides a compreh
 == Status
 
 |===
-|Maven Central |https://central.sonatype.com/artifact/ru.fiddlededee/unidoc-publisher[version 0.7.5]
+|Maven Central |https://central.sonatype.com/artifact/ru.fiddlededee/unidoc-publisher[version 0.7.6]
 |===
 
 == Documentation

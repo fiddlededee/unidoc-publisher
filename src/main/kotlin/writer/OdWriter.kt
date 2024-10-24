@@ -6,7 +6,6 @@ import org.redundent.kotlin.xml.Namespace
 import org.redundent.kotlin.xml.xml
 import java.io.File
 import java.util.Base64
-import kotlin.math.roundToInt
 
 open class OdWriter(
     preOdNode: XmlNode? = null, val odtStyleList: OdtStyleList
@@ -295,6 +294,9 @@ open class OdWriter(
                     }
                     if (span.roles.contains("strong") or span.roles.contains("b")) {
                         attribute("fo:font-weight", "bold")
+                    }
+                    if (span.roles.contains("mark") ) {
+                        attribute("fo:background-color", "#fef0c2")
                     }
                     arrayOf("super", "sub").forEach { role ->
                         if (span.roles.contains(role.substring(0, 3)))
