@@ -1,5 +1,5 @@
 #!/usr/bin/env kotlin
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.7.4")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.7.5")
 @file:DependsOn("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
 
 import com.fasterxml.jackson.databind.DeserializationFeature
