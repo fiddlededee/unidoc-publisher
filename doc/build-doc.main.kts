@@ -1,4 +1,4 @@
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.7.5")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.7.6")
 @file:DependsOn("org.asciidoctor:asciidoctorj:2.5.11")
 @file:DependsOn("com.helger:ph-css:7.0.1")
 @file:DependsOn("com.google.guava:guava:21.0")

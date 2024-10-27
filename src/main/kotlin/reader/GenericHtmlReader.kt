@@ -188,7 +188,7 @@ open class GenericHtmlReader(
     }
 
     open fun detectSpan() {
-        val spanTypes = "strong|b|em|i|span|br|sup|sub".split("|")
+        val spanTypes = "strong|b|em|i|span|br|sup|sub|mark".split("|")
         detectByExpression({ spanTypes.contains(it.nodeName()) }) { confirmedHtmlNode ->
             val newSpan = Span().apply {
                 sourceTagName = confirmedHtmlNode.nodeName()
