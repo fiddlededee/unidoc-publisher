@@ -144,13 +144,13 @@ open class GenericHtmlReader(
 
     open fun detectOl() {
         detectByExpression({ it.nodeName() == "ol" }) { confirmedNode ->
-            parseNode(addToAST(OrderedList()), confirmedNode)
+            parseNode(addToAST(OrderedList().setBasics(confirmedNode)), confirmedNode)
         }
     }
 
     open fun detectUl() {
         detectByExpression({ it.nodeName() == "ul" }) { confirmedNode ->
-            parseNode(addToAST(UnorderedList()), confirmedNode)
+            parseNode(addToAST(UnorderedList().setBasics(confirmedNode)), confirmedNode)
         }
     }
 
