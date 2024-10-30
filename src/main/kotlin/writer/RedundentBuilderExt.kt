@@ -68,3 +68,13 @@ fun XmlNode.tableColumnProperties(tableColumnStyle: XmlNode.() -> Unit) {
         tableColumnStyleNodes[0].apply { tableColumnStyle.invoke(this) }
     }
 }
+
+fun XmlNode.tableRowProperties(tableRowStyle: XmlNode.() -> Unit) {
+    val tableRowStyleNodes =
+        children.filterIsInstance<XmlNode>().filter { it.nodeName == "style:table-row-properties" }
+    if (tableRowStyleNodes.isEmpty())
+        "style:table-row-properties" { tableRowStyle.invoke(this) }
+    else {
+        tableRowStyleNodes[0].apply { tableRowStyle.invoke(this) }
+    }
+}
