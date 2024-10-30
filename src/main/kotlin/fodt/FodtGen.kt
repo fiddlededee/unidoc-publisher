@@ -73,7 +73,7 @@ class FodtGenerator(val preFodtList: ArrayList<PreRegion>, template: String) {
         return enrichedTemplate.serialize()
     }
 
-    enum class StyleFamily { PARAGRAPH, TEXT, TABLE, TABLECELL, TABLECOLUMN, GRAPHIC }
+    enum class StyleFamily { PARAGRAPH, TEXT, TABLE, TABLECELL, TABLECOLUMN, TABLEROW, GRAPHIC }
 
     var styleNum = 0
     fun setStyles(xpathExpression: String, styleFamily: StyleFamily, preFodt: Document) {
@@ -85,6 +85,7 @@ class FodtGenerator(val preFodtList: ArrayList<PreRegion>, template: String) {
                 StyleFamily.TABLE -> "TABAMC"
                 StyleFamily.TABLECELL -> "TABCELLAMC"
                 StyleFamily.TABLECOLUMN -> "TABCOLAMC"
+                StyleFamily.TABLEROW -> "TABROWAMC"
                 StyleFamily.GRAPHIC -> "GAMC"
             }
             val styleFamilyName = when (styleFamily) {
@@ -93,6 +94,7 @@ class FodtGenerator(val preFodtList: ArrayList<PreRegion>, template: String) {
                 StyleFamily.TABLE -> "table"
                 StyleFamily.TABLECELL -> "table-cell"
                 StyleFamily.TABLECOLUMN -> "table-column"
+                StyleFamily.TABLEROW -> "table-row"
                 StyleFamily.GRAPHIC -> "graphic"
             }
             styleNum += 1
@@ -131,7 +133,8 @@ class FodtGenerator(val preFodtList: ArrayList<PreRegion>, template: String) {
             val tablePropertiesNodes = it.childNodes.iterable().filter { node ->
                 node is Element && (node.nodeName == "style:table-properties"
                         || node.nodeName == "style:table-column-properties"
-                        || node.nodeName == "style:table-cell-properties")
+                        || node.nodeName == "style:table-cell-properties"
+                        || node.nodeName == "style:table-row-properties")
             }
             if (tablePropertiesNodes.isNotEmpty()) {
                 val tablePropertiesNode = tablePropertiesNodes[0]
@@ -148,7 +151,9 @@ class FodtGenerator(val preFodtList: ArrayList<PreRegion>, template: String) {
                     )
                 }
             }
-            if (arrayOf(StyleFamily.TABLE, StyleFamily.TABLECELL, StyleFamily.TABLECOLUMN).contains(styleFamily)) {
+            if (arrayOf(StyleFamily.TABLE, StyleFamily.TABLECELL, StyleFamily.TABLECOLUMN, StyleFamily.TABLEROW)
+                    .contains(styleFamily)
+            ) {
                 it.setAttribute("table:style-name", generatedStyleName)
             } else {
                 val styleNameAttribute =
@@ -180,6 +185,7 @@ class FodtGenerator(val preFodtList: ArrayList<PreRegion>, template: String) {
         setStyles("(//table:table)", StyleFamily.TABLE, preFodt)
         setStyles("(//table:table-cell)", StyleFamily.TABLECELL, preFodt)
         setStyles("(//table:table-column)", StyleFamily.TABLECOLUMN, preFodt)
+        setStyles("(//table:table-row)", StyleFamily.TABLEROW, preFodt)
         setStyles("(//draw:frame)", StyleFamily.GRAPHIC, preFodt)
         val officeText = enrichedTemplate.xpath("//office:body/office:text")
         if (officeText.length == 1) {
