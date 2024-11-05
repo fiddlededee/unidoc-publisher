@@ -29,6 +29,7 @@ open class OdWriter(
         namespace(Namespace("draw", "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"))
         namespace(Namespace("office", "urn:oasis:names:tc:opendocument:xmlns:office:1.0"))
         namespace(Namespace("graphic", "urn:oasis:names:tc:opendocument:xmlns:office:1.0"))
+        namespace(Namespace("loext", "urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"))
     }
 
     open fun newInstance(xmlNode: XmlNode, odtStyleList: OdtStyleList): OdWriter {
