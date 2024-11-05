@@ -1,4 +1,4 @@
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.7.8")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.7.9")
 @file:DependsOn("org.jsoup:jsoup:1.17.1")
 
 import converter.FodtConverter
