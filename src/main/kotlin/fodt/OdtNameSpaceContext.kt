@@ -12,6 +12,7 @@ class OdtNameSpaceContext : NamespaceContext {
             "table" -> "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
             "draw" -> "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
             "svg" -> "http://www.w3.org/2000/svg"
+            "loext" -> "urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
             else -> null
         }
         return namespaceURI
