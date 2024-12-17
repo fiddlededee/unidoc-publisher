@@ -335,14 +335,14 @@ open class OdWriter(
 
     override fun write(textFrame: TextFrame) {
         preOdNode.apply {
-            "text:p" {
-                textProperties {
-                    attributes("fo:font-size" to "0pt")
-                }
-                paragraphProperties {
-                    attributes("fo:line-height" to "100%")
-                }
-                odtStyleList.applyStyle(textFrame, this, "p")
+//            "text:p" {
+//                textProperties {
+//                    attributes("fo:font-size" to "0pt")
+//                }
+//                paragraphProperties {
+//                    attributes("fo:line-height" to "100%")
+//                }
+//                odtStyleList.applyStyle(textFrame, this, "p")
                 "draw:frame" {
                     attributes(
                         "draw:style-name" to "Frame",
@@ -357,13 +357,14 @@ open class OdWriter(
                             "style:horizontal-rel" to "paragraph"
                         )
                     }
-                    odtStyleList.applyStyle(textFrame, this, "frame")
+//                    odtStyleList.applyStyle(textFrame, this, "frame")
+                    odtStyleList.applyStyle(textFrame, this)
                     "draw:text-box" {
                         process(textFrame, "text-box")
                     }
                 }
             }
-        }
+//        }
     }
 
     override fun write(footnote: Footnote) {

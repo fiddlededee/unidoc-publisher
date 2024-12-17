@@ -1,1 +1,61 @@
-<?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="437.5px" preserveAspectRatio="none" style="width:1118px;height:437px;" version="1.1" viewBox="0 0 1118 437" width="1118.75px" zoomAndPan="magnify"><defs/><g><!--entity c1--><g id="elem_c1"><rect fill="#F1F1F1" height="144.0582" rx="7.8125" ry="7.8125" style="stroke:#181818;stroke-width:1.5625;" width="412.5" x="45.3125" y="21.875"/><rect fill="#F1F1F1" height="31.25" style="stroke:#181818;stroke-width:1.5625;" width="46.875" x="395.3125" y="37.5"/><rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="389.0625" y="43.75"/><rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="389.0625" y="56.25"/><text fill="#000000" font-family="sans-serif" font-size="43.75" lengthAdjust="spacing" textLength="287.5" x="92.1875" y="125.2197">First component</text></g><!--entity c2--><g id="elem_c2"><rect fill="#F1F1F1" height="144.0582" rx="7.8125" ry="7.8125" style="stroke:#181818;stroke-width:1.5625;" width="459.375" x="21.875" y="275"/><rect fill="#F1F1F1" height="31.25" style="stroke:#181818;stroke-width:1.5625;" width="46.875" x="418.75" y="290.625"/><rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="412.5" y="296.875"/><rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="412.5" y="309.375"/><text fill="#000000" font-family="sans-serif" font-size="43.75" lengthAdjust="spacing" textLength="334.375" x="68.75" y="378.3447">Second component</text></g><!--entity c3--><g id="elem_c3"><rect fill="#F1F1F1" height="144.0582" rx="7.8125" ry="7.8125" style="stroke:#181818;stroke-width:1.5625;" width="431.25" x="668.75" y="150"/><rect fill="#F1F1F1" height="31.25" style="stroke:#181818;stroke-width:1.5625;" width="46.875" x="1037.5" y="165.625"/><rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="1031.25" y="171.875"/><rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="1031.25" y="184.375"/><text fill="#000000" font-family="sans-serif" font-size="43.75" lengthAdjust="spacing" textLength="306.25" x="715.625" y="253.3447">Third component</text></g><!--link c1 to c3--><g id="link_c1_c3"><path d="M458.125,135.3438 C525.2813,149.0937 581.8174,160.651 649.6924,174.526 " fill="none" id="c1-to-c3" style="stroke:#181818;stroke-width:3.125;"/><polygon fill="#181818" points="668.0625,178.2813,643.0108,160.4017,652.7541,175.1519,638.0039,184.8952,668.0625,178.2813" style="stroke:#181818;stroke-width:3.125;"/></g><!--link c2 to c3--><g id="link_c2_c3"><path d="M481.7812,301.5625 C542.7188,289.4063 589.9876,279.9823 650.1126,267.9823 " fill="none" id="c2-to-c3" style="stroke:#181818;stroke-width:3.125;"/><polygon fill="#181818" points="668.5,264.3125,638.4724,257.559,653.1772,267.3707,643.3655,282.0755,668.5,264.3125" style="stroke:#181818;stroke-width:3.125;"/></g><!--SRC=[POix3i9030Lxdy8NY9HFJya5e5jH6E-IM4dibTVSdmWX2kX6R-QrLRIIquvtudLsUsfcsymndBGTgcX0-rQv2avz3rjv18QXoxm4Pl728QQGpk8ja6slfiVrXjIG1qYNmgRvLuoGhelutpu13zXrfpUD7te1]--></g></svg>
+<?xml version="1.0" encoding="us-ascii" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css"
+     height="437.5px" preserveAspectRatio="none" style="width:1118px;height:437px;" version="1.1" viewBox="0 0 1118 437"
+     width="1118.75px" zoomAndPan="magnify">
+    <defs/>
+    <g><!--entity c1-->
+        <g id="elem_c1">
+            <rect fill="#F1F1F1" height="144.0582" rx="7.8125" ry="7.8125" style="stroke:#181818;stroke-width:1.5625;"
+                  width="412.5" x="45.3125" y="21.875"/>
+            <rect fill="#F1F1F1" height="31.25" style="stroke:#181818;stroke-width:1.5625;" width="46.875" x="395.3125"
+                  y="37.5"/>
+            <rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="389.0625"
+                  y="43.75"/>
+            <rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="389.0625"
+                  y="56.25"/>
+            <text fill="#000000" font-family="Liberation Serif" font-size="43.75" lengthAdjust="spacing" textLength="287.5"
+                  x="92.1875" y="125.2197">First component
+            </text>
+        </g><!--entity c2-->
+        <g id="elem_c2">
+            <rect fill="#F1F1F1" height="144.0582" rx="7.8125" ry="7.8125" style="stroke:#181818;stroke-width:1.5625;"
+                  width="459.375" x="21.875" y="275"/>
+            <rect fill="#F1F1F1" height="31.25" style="stroke:#181818;stroke-width:1.5625;" width="46.875" x="418.75"
+                  y="290.625"/>
+            <rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="412.5"
+                  y="296.875"/>
+            <rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="412.5"
+                  y="309.375"/>
+            <text fill="#000000" font-family="Liberation Serif" font-size="43.75" lengthAdjust="spacing" textLength="334.375"
+                  x="68.75" y="378.3447">Second component
+            </text>
+        </g><!--entity c3-->
+        <g id="elem_c3">
+            <rect fill="#F1F1F1" height="144.0582" rx="7.8125" ry="7.8125" style="stroke:#181818;stroke-width:1.5625;"
+                  width="431.25" x="668.75" y="150"/>
+            <rect fill="#F1F1F1" height="31.25" style="stroke:#181818;stroke-width:1.5625;" width="46.875" x="1037.5"
+                  y="165.625"/>
+            <rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="1031.25"
+                  y="171.875"/>
+            <rect fill="#F1F1F1" height="6.25" style="stroke:#181818;stroke-width:1.5625;" width="12.5" x="1031.25"
+                  y="184.375"/>
+            <text fill="#000000" font-family="Liberation Serif" font-size="43.75" lengthAdjust="spacing" textLength="306.25"
+                  x="715.625" y="253.3447">Third component
+            </text>
+        </g><!--link c1 to c3-->
+        <g id="link_c1_c3">
+            <path d="M458.125,135.3438 C525.2813,149.0937 581.8174,160.651 649.6924,174.526 " fill="none" id="c1-to-c3"
+                  style="stroke:#181818;stroke-width:3.125;"/>
+            <polygon fill="#181818"
+                     points="668.0625,178.2813,643.0108,160.4017,652.7541,175.1519,638.0039,184.8952,668.0625,178.2813"
+                     style="stroke:#181818;stroke-width:3.125;"/>
+        </g><!--link c2 to c3-->
+        <g id="link_c2_c3">
+            <path d="M481.7812,301.5625 C542.7188,289.4063 589.9876,279.9823 650.1126,267.9823 " fill="none"
+                  id="c2-to-c3" style="stroke:#181818;stroke-width:3.125;"/>
+            <polygon fill="#181818"
+                     points="668.5,264.3125,638.4724,257.559,653.1772,267.3707,643.3655,282.0755,668.5,264.3125"
+                     style="stroke:#181818;stroke-width:3.125;"/>
+        </g><!--SRC=[POix3i9030Lxdy8NY9HFJya5e5jH6E-IM4dibTVSdmWX2kX6R-QrLRIIquvtudLsUsfcsymndBGTgcX0-rQv2avz3rjv18QXoxm4Pl728QQGpk8ja6slfiVrXjIG1qYNmgRvLuoGhelutpu13zXrfpUD7te1]-->
+    </g>
+</svg>
