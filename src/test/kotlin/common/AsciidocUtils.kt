@@ -24,6 +24,7 @@ object AsciidocHtmlFactory {
 }
 
 fun String.asciidoc2PdfApprove(key: String, tune: FodtConverter.() -> Unit = {}) {
+    val (loConString : String?, remoteDir : String?)  = arrayOf("localhost:8101", "/documents")
     val asciidocMarkup = this
     FodtConverter {
         adaptWith(AsciidoctorAdapter)
@@ -46,7 +47,9 @@ fun String.asciidoc2PdfApprove(key: String, tune: FodtConverter.() -> Unit = {})
 //        File("temp/ast-transformed.yaml").writeText(ast().toYamlString())
 //        File("temp/fodt.fodt").writeText(fodt())
         File("approved/asciidoc/${key}.received.fodt").writeText(fodt())
-        Lo.fodtToPdf("approved/asciidoc/${key}.received.fodt")
+        val pathToFodt = if (remoteDir ==  null) "approved/asciidoc" else
+            "file:////${remoteDir}/approved/asciidoc"
+        Lo.fodtToPdf("${pathToFodt}/${key}.received.fodt", url = loConString)
         if (!File("approved/asciidoc/${key}.approved.pdf").exists())
             File("approved/asciidoc/${key}.received.pdf").copyTo(
                 File("approved/asciidoc/${key}.approved.pdf")

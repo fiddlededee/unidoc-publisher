@@ -230,6 +230,12 @@ object AsciidoctorAdapter : GenericAdapter {
                         textProperties { attributes("fo:color" to it.second) }
                     }
                 }
+            },
+            OdtStyle { paragraph ->
+                if (paragraph !is Paragraph) return@OdtStyle
+                if (!paragraph.roles.contains("text-frame-wrapper-paragraph")) return@OdtStyle
+                textProperties { attributes("fo:font-size" to "0pt") }
+                paragraphProperties { attributes("fo:font-size" to "0pt") }
             }
         )
     }
@@ -338,7 +344,11 @@ object AsciidoctorAdapter : GenericAdapter {
                 if (table !is Table) return@liChildren
                 if (table.parent() is TextFrame) return@liChildren
                 val textFrame = TextFrame()
-                table.insertBefore(textFrame)
+                val textFrameWrapperParagraph = Paragraph().apply {
+                    roles("text-frame-wrapper-paragraph")
+                    appendChild(textFrame)
+                }
+                table.insertBefore(textFrameWrapperParagraph)
                 textFrame.appendChild(table)
             }
         }
