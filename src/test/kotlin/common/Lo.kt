@@ -1,5 +1,3 @@
-package common
-
 import com.sun.star.beans.PropertyValue
 import com.sun.star.beans.XPropertySet
 import com.sun.star.bridge.XBridgeFactory
@@ -20,20 +18,32 @@ import kotlin.io.path.Path
 import kotlin.system.exitProcess
 
 object Lo {
-    private val outputFormats = "pdf"
-    private val outputFileName : String? = null
-    fun fodtToPdf(inputDoc: String) {
+    var cachedDesktop: Any? = null
+    var cachedXDispatcherHelper: XDispatchHelper? = null
+    private val outputFileName: String? = null
+    fun fodtToPdf(inputDoc: String, outputFormats: String = "pdf",  url: String? = null) {
         val matchedDocBasePath = """.*(?=[\.][a-zA-Z_]+$)""".toRegex().find(inputDoc)
         val outputDocBasePath = matchedDocBasePath?.value ?: inputDoc
         val outputDocBaseFolder = Path(inputDoc).parent
             ?: throw Exception("Can't extract folder from \"${outputDocBasePath}\"")
-
-        val xContext = socketContext()
-        val xMCF: XMultiComponentFactory = xContext.serviceManager ?: throw Exception("Can't get xContext service manager")
-        val dispatcherHelper = xMCF.createInstanceWithContext("com.sun.star.frame.DispatchHelper", xContext)!!
-        val xDispatcherHelper = qi(XDispatchHelper::class.java, dispatcherHelper)
-        val desktop: Any = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", xContext)
-        val xDeskop = qi(XDesktop::class.java, desktop)
+        var desktop: Any? = null
+        var xDispatcherHelper: XDispatchHelper? = null
+        if (cachedDesktop == null) {
+            val xContext = socketContext(url)
+            val xMCF: XMultiComponentFactory =
+                xContext.serviceManager ?: throw Exception("Can't get xContext service manager")
+            val dispatcherHelper = xMCF.createInstanceWithContext("com.sun.star.frame.DispatchHelper", xContext)!!
+            val xDispatcherHelperLocal: XDispatchHelper = qi(XDispatchHelper::class.java, dispatcherHelper)
+            val desktopLocal: Any = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", xContext)
+            cachedDesktop = desktopLocal
+            cachedXDispatcherHelper = xDispatcherHelperLocal
+            desktop = desktopLocal
+            xDispatcherHelper = xDispatcherHelperLocal
+        } else {
+            desktop = cachedDesktop
+            xDispatcherHelper =  cachedXDispatcherHelper!!
+        }
+        val xDesktop = qi(XDesktop::class.java, desktop)
         val xComponentLoader = qi(XComponentLoader::class.java, desktop)
         val loadProps = arrayOf<PropertyValue>()
         lateinit var component: XComponent
@@ -50,7 +60,7 @@ object Lo {
             exitProcess(-1)
         }
         val xTextDocument = qi(XTextDocument::class.java, component)
-        val xDispatchProvider = qi(XDispatchProvider::class.java, xDeskop.currentFrame)
+        val xDispatchProvider = qi(XDispatchProvider::class.java, xDesktop.currentFrame)
 
 // Update indexes
         val indexes = qi(XDocumentIndexesSupplier::class.java, xTextDocument)
@@ -85,14 +95,16 @@ object Lo {
                 println("ERROR: Unable to save $outputPath. Probably file is locked")
             }
         }
-
-        xDeskop.terminate()
+        if (url == null) xDesktop.terminate() else {
+            xTextDocument.dispose()
+            delay(100)
+        }
     }
 
     val loCliCommand = "soffice"
-    val trace = false
+    val trace = true
 
-    fun socketContext(): XComponentContext // use socket connection to Office
+    fun socketContext(url: String? = null): XComponentContext // use socket connection to Office
 // https://forum.openoffice.org/en/forum/viewtopic.php?f=44&t=1014
     {
         val xcc: XComponentContext?  // the remote office component context
@@ -103,8 +115,20 @@ object Lo {
             cmdArray[1] = "--headless"
             cmdArray[2] = "--accept=socket,host=localhost,port=" +
                     "8100" + ";urp;"
-            val p = Runtime.getRuntime().exec(cmdArray)
-            if (p != null) println("INFO: Office process created")
+            if (url == null) {
+                println("URL not provided, creating new process")
+                val p = Runtime.getRuntime().exec(cmdArray)
+                if (p != null) println("INFO: Office process created")
+            }
+            val (host, port) = run {
+                if (url == null) {
+                    arrayOf("localhost", "8100")
+                } else if (url.split(":").size != 2) {
+                    throw Exception("Can't parse URL $url to connetct to LibreOffice")
+                } else {
+                    arrayOf(url.split(":")[0], url.split(":")[1])
+                }
+            }
             val localContext = Bootstrap.createInitialComponentContext(null)
             // Get the local service manager
             val localFactory = localContext.serviceManager
@@ -124,7 +148,7 @@ object Lo {
                 }
                 try {
                     connection = connector.connect(
-                        "socket,host=localhost,port=" + "8100"
+                        "socket,host=${host},port=${port}"
                     )
                     connected = true
                 } catch (_: Exception) {
@@ -184,6 +208,7 @@ object Lo {
 
     fun fnmToURL(fnm: String): String? // convert a file path to URL format
     {
+        if (fnm.startsWith("file:///")) return fnm
         return try {
             val sb: StringBuffer?
             val path = File(fnm).canonicalPath
