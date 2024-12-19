@@ -1,0 +1,25 @@
+!<Document>
+children:
+- !<Header>
+  level: 1
+  children:
+  - !<Text>
+    text: "Section "
+  - !<Span>
+    roles:
+    - "strong"
+    children:
+    - !<Text>
+      text: "One"
+- !<Paragraph>
+  children:
+  - !<Text>
+    text: "Some "
+  - !<Span>
+    roles:
+    - "strong"
+    children:
+    - !<Text>
+      text: "text"
+  - !<Text>
+    text: "!"
