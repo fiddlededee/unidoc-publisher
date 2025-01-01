@@ -19,7 +19,7 @@ abstract class Node() {
     var sourceTagName: String? = null
     var includeTags: MutableSet<String> = mutableSetOf()
     var sourceAttributes: Map<String, String> = mapOf()
-
+    var sourceMapping : SourceMapping? = null
 
     @get:JsonIgnore
     abstract val isInline: Boolean
