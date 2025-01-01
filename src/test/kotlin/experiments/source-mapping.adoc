@@ -1,0 +1,6 @@
+== Section *One*
+
+[.some-role.some-role-1]
+Some *text*!
+
+include::source-mapping/include.adoc[]

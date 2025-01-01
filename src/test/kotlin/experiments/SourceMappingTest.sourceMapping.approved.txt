@@ -1,0 +1,75 @@
+!<Document>
+sourceTagName: "body"
+children:
+- !<OpenBlock>
+  sourceTagName: "div"
+  sourceMapping:
+    file: "source-mapping.adoc"
+    lineno: 1
+  roles:
+  - "sect1"
+  children:
+  - !<Header>
+    id: "_section_one"
+    sourceTagName: "h2"
+    level: 2
+    children:
+    - !<Text>
+      text: "Section "
+    - !<Span>
+      sourceTagName: "strong"
+      roles:
+      - "strong"
+      children:
+      - !<Text>
+        text: "One"
+  - !<OpenBlock>
+    sourceTagName: "div"
+    sourceMapping:
+      file: "source-mapping.adoc"
+      lineno: 4
+    roles:
+    - "paragraph"
+    - "some-role"
+    - "some-role-1"
+    children:
+    - !<Paragraph>
+      sourceTagName: "p"
+      children:
+      - !<Text>
+        text: "Some "
+      - !<Span>
+        sourceTagName: "strong"
+        roles:
+        - "strong"
+        children:
+        - !<Text>
+          text: "text"
+      - !<Text>
+        text: "!"
+  - !<OpenBlock>
+    sourceTagName: "div"
+    sourceMapping:
+      file: "source-mapping/include.adoc"
+      lineno: 1
+    roles:
+    - "paragraph"
+    children:
+    - !<Paragraph>
+      sourceTagName: "p"
+      children:
+      - !<Text>
+        text: "Some paragraph"
+  - !<OpenBlock>
+    sourceTagName: "div"
+    sourceMapping:
+      file: "source-mapping/include.adoc"
+      lineno: 3
+    roles:
+    - "paragraph"
+    children:
+    - !<Paragraph>
+      sourceTagName: "p"
+      children:
+      - !<Text>
+        text: "Some another\nparagraph"
