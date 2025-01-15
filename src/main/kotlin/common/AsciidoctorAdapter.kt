@@ -42,6 +42,8 @@ object AsciidoctorAdapter : GenericAdapter {
                     "footnotes",
                     "footnote",
                     "dlist",
+                    "olist",
+                    "ulist",
                     "content",
                     *(1..6).map { "sect$it" }.toTypedArray(),
                 )
