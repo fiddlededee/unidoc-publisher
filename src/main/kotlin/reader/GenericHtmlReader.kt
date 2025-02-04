@@ -156,7 +156,7 @@ open class GenericHtmlReader(
 
     open fun detectLi() {
         detectByExpression({ it.nodeName() == "li" }) { confirmedNode ->
-            parseNode(addToAST(ListItem()), confirmedNode)
+            parseNode(addToAST(ListItem().setBasics(confirmedNode)), confirmedNode)
         }
     }
 
