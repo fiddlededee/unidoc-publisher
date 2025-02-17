@@ -18,7 +18,7 @@ abstract class Node() {
     var id: String? = null
     var sourceTagName: String? = null
     var includeTags: MutableSet<String> = mutableSetOf()
-    var sourceAttributes: Map<String, String> = mapOf()
+    var sourceAttributes: MutableMap<String, String> = mutableMapOf()
     var sourceMapping : SourceMapping? = null
 
     @get:JsonIgnore
