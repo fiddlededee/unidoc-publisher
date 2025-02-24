@@ -1,0 +1,11 @@
+!<Document>
+sourceTagName: "body"
+children:
+- !<Span>
+  sourceTagName: "br"
+  roles:
+  - "br"
+- !<Span>
+  sourceTagName: "br"
+  roles:
+  - "br"

@@ -1,0 +1,15 @@
+!<Document>
+sourceTagName: "body"
+children:
+- !<Paragraph>
+  sourceTagName: "p"
+  children:
+  - !<Text>
+    text: "a"
+- !<Paragraph>
+  sourceTagName: "p"
+  children:
+  - !<Text>
+    text: "b"
+- !<Paragraph>
+  sourceTagName: "p"

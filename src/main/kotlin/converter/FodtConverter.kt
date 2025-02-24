@@ -4,6 +4,7 @@ import common.GenericAdapter
 import fodt.FodtGenerator
 import model.Document
 import model.Node
+import model.Text
 import org.redundent.kotlin.xml.PrintOptions
 import reader.GenericHtmlReader
 import reader.HtmlNode
@@ -27,7 +28,7 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
 
     var xpath: String = "/html/body"
     var unknownTagProcessingRule: HtmlNode.() -> UnknownTagProcessing = { UnknownTagProcessing.UNDEFINDED }
-    var customNodeProcessingRule: Node.(htmlNode : HtmlNode) -> Unit = {}
+    var customNodeProcessingRule: Node.(htmlNode: HtmlNode) -> Unit = {}
     var odtStyleList = OdtStyleList()
     var template: String? = null
     var ast: Node? = null
@@ -66,9 +67,22 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
             ?: throw Exception("Please set html")
         ast = Document()
         val localAst = ast ?: throw Exception("Error: ast variable was mutated")
-        newReaderInstance(localAst, localHtmlNode,
-            unknownTagProcessingRule, customNodeProcessingRule)
+        newReaderInstance(
+            localAst, localHtmlNode,
+            unknownTagProcessingRule, customNodeProcessingRule
+        )
             .apply { localAst.setBasics(localHtmlNode); iterateAll() }
+        // Don't understand html rendering rules, hope I'm right about this
+        localAst.descendant { it is Text && it.text.isBlank() }.forEach { blankTextNode ->
+            if (!blankTextNode.hasPrevious() ||
+                !blankTextNode.previous().isInline ||
+                blankTextNode.previous().roles.contains("br") ||
+                !blankTextNode.hasNext() ||
+                !blankTextNode.next().isInline ||
+                blankTextNode.next().roles.contains("br")
+            )
+                blankTextNode.remove()
+        }
     }
 
     fun generatePre() {
@@ -109,7 +123,7 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
     open fun newReaderInstance(
         ast: Node, htmlNode: HtmlNode,
         unknownTagProcessingRule: HtmlNode.() -> UnknownTagProcessing,
-        customNodeProcessing: Node.(htmlNode : HtmlNode) -> Unit
+        customNodeProcessing: Node.(htmlNode: HtmlNode) -> Unit
     ): GenericHtmlReader {
         return GenericHtmlReader(ast, htmlNode, unknownTagProcessingRule, customNodeProcessing)
     }

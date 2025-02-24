@@ -78,9 +78,12 @@ open class GenericHtmlReader(
             val srcAttrValue = confirmedNode.attr("src")
             val widthAttrValue = confirmedNode.attr("width")
             val heightAttrValue = if (confirmedNode.hasAttr("height")) confirmedNode.attr("height") else null
-            parseNode(addToAST(Image(
-                srcAttrValue, Length.fromString(widthAttrValue)
-            ).apply { this.height = Length.fromString(heightAttrValue) }), confirmedNode)
+            parseNode(
+                addToAST(
+                Image(
+                    srcAttrValue, Length.fromString(widthAttrValue)
+                ).apply { this.height = Length.fromString(heightAttrValue) }), confirmedNode
+            )
         }
     }
 
@@ -217,14 +220,11 @@ open class GenericHtmlReader(
         }
     }
 
-
     open fun detectText() {
         detectByExpression({ htmlNode -> htmlNode.isText() }) { confirmedNode ->
             val text = Text(confirmedNode.nodeText() ?: "")
-            if (confirmedNode.inPre() || text.text.isNotBlank()) {
-                val newTextNode = Text(text.text)
-                addToAST(newTextNode)
-            }
+            val newTextNode = Text(text.text)
+            addToAST(newTextNode)
         }
     }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env kotlin
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.8.1")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.9.0")
 @file:DependsOn("net.lingala.zip4j:zip4j:2.11.5")
 @file:DependsOn("mfietz:jhyphenator:1.0")
 

@@ -13,6 +13,42 @@ import verify
 class TestNodes {
 
     @Test
+    fun LineFeedBetweenSpans() {
+        FodtConverter {
+            html = """
+                <i>a</i>
+                <i>b<i>
+            """.trimIndent()
+            parse()
+            ast?.toYamlString()!!.verify()
+        }
+    }
+
+    @Test
+    fun LineFeedBetweenBlocks() {
+        FodtConverter {
+            html = """
+                <p>a</p>
+                <p>b<p>
+            """.trimIndent()
+            parse()
+            ast?.toYamlString()!!.verify()
+        }
+    }
+
+    @Test
+    fun LineFeedBetweenBrs() {
+        FodtConverter {
+            html = """
+                <br/>
+                <br/>
+            """.trimIndent()
+            parse()
+            ast?.toYamlString()!!.verify()
+        }
+    }
+
+    @Test
     fun table() {
         FodtConverter {
             html = "<table><tr><td>A1</td><td>A2</td></tr></table>"

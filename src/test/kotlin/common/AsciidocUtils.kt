@@ -35,7 +35,7 @@ fun String.asciidoc2PdfApprove(key: String, tune: FodtConverter.() -> Unit = {})
         template = File("approved/asciidoc/template-1.fodt").readText()
         tune.invoke(this)
         if (ast == null) parse()
-//        File("temp/ast.yaml").writeText(ast().toYamlString())
+        File("temp/ast.yaml").writeText(ast().toYamlString())
         ast().descendant { it is Image }.map { it as Image }.forEach { image ->
             val base64Regex = """^data:image/(.*);base64,(.*)$""".toRegex()
             if (!base64Regex.matches(image.src)) image.src =
@@ -44,7 +44,7 @@ fun String.asciidoc2PdfApprove(key: String, tune: FodtConverter.() -> Unit = {})
         ast
         if (preList.isEmpty()) generatePre()
         if (fodt == null) generateFodt()
-//        File("temp/ast-transformed.yaml").writeText(ast().toYamlString())
+        File("temp/ast-transformed.yaml").writeText(ast().toYamlString())
 //        File("temp/fodt.fodt").writeText(fodt())
         File("approved/asciidoc/${key}.received.fodt").writeText(fodt())
         val pathToFodt = if (remoteDir ==  null) "approved/asciidoc" else
