@@ -6,9 +6,12 @@ import org.redundent.kotlin.xml.Node as XmlNode
 
 interface OdtStyleAny
 
-class CustomWriter(
+class OdtCustomWriter(
     val writer: OdWriter.(node: Node) -> Unit,
 ) : OdtStyleAny
+
+@Deprecated("Use OdtCustomWriter")
+typealias CustomWriter = OdtCustomWriter
 
 class OdtStyle(
     val key: String? = null,
@@ -29,15 +32,13 @@ class OdtStyleList(
         styleList.filterIsInstance<OdtStyle>()
             .filter { it.key == key }
             .forEach {
-//                if (key == "frame") println(33333)
                 xmlNode.apply { it.styler.invoke(this, node) }
             }
     }
 
     fun applyCustomWriter(node: Node, odWriter: OdWriter): Boolean {
         return run breaking@{
-            styleList.filterIsInstance<CustomWriter>().forEach {
-//                println(odWriter.preOdNode.toString(false))
+            styleList.filterIsInstance<OdtCustomWriter>().forEach {
                 val xmlNodeInitialSize = odWriter.preOdNode.children.size
                 odWriter.preOdNode.apply {
                     it.writer.invoke(odWriter, node)

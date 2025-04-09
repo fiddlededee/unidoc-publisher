@@ -1,18 +1,13 @@
 package e2e
 
 import com.helger.css.reader.CSSReader
-import common.AsciidoctorAdapter
+import converter.fodt.AsciidoctorOdAdapter
 import common.asciidoc2PdfApprove
-import model.ListItem
 import model.Paragraph
 import model.Span
-import model.TextFrame
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
 import writer.OdtStyle
 import writer.OdtStyleList
-import writer.graphicProperties
 import writer.textProperties
 import java.io.File
 import java.nio.charset.StandardCharsets
@@ -26,7 +21,7 @@ class TestListing {
         File("approved/asciidoc/listing-highlight-1.adoc")
             .readText()
             .asciidoc2PdfApprove("listing-highlight-1") {
-                odtStyleList = AsciidoctorAdapter.basicStyle()
+                odtStyleList = AsciidoctorOdAdapter.basicStyle()
                 odtStyleList.add(getRougeStyles())
             }
     }

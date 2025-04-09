@@ -1,19 +1,10 @@
 package reader
 
-import common.AsciidoctorAdapter
-import common.asciidocAsHtml
-import common.prettySerialize
-import converter.FodtConverter
-import fodt.parseStringAsXML
 import model.Document
-import model.OpenBlock
 import model.Paragraph
 import nodeRolesSequence
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestFactory
 import shouldBe
-import verify
 
 
 class TestAstModifications {

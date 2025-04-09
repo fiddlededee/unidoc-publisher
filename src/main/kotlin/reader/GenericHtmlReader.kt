@@ -164,8 +164,8 @@ open class GenericHtmlReader(
         val regEx = "h([0-9])".toRegex()
         detectByExpression({ regEx.matches(it.nodeName()) }) { confirmedHtmlNode ->
             val level = regEx.matchEntire(confirmedHtmlNode.nodeName())?.groupValues?.get(1) ?: "0"
-            val newHeader = Header(level = level.toInt()).setBasics(confirmedHtmlNode)
-            parseNode(addToAST(newHeader), confirmedHtmlNode)
+            val newHeading = Heading(level = level.toInt()).setBasics(confirmedHtmlNode)
+            parseNode(addToAST(newHeading), confirmedHtmlNode)
         }
     }
 
@@ -221,7 +221,7 @@ open class GenericHtmlReader(
     open fun detectText() {
         detectByExpression({ htmlNode -> htmlNode.isText() }) { confirmedNode ->
             val text = Text(confirmedNode.nodeText() ?: "")
-            if (confirmedNode.inPre() || text.text.isNotBlank()) {
+            if (confirmedNode.inPre() || text.text.isNotEmpty()) {
                 val newTextNode = Text(text.text)
                 addToAST(newTextNode)
             }

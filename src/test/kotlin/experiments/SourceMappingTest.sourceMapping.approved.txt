@@ -9,7 +9,7 @@ children:
   roles:
   - "sect1"
   children:
-  - !<Header>
+  - !<Heading>
     id: "_section_one"
     sourceTagName: "h2"
     level: 2

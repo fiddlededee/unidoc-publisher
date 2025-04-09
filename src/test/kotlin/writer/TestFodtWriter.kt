@@ -1,14 +1,16 @@
 package writer
 
 import model.Document
-import model.Header
+import model.Heading
 import model.Paragraph
 import org.approvaltests.Approvals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.redundent.kotlin.xml.PrintOptions
 import org.redundent.kotlin.xml.xml
+import verify
 
-class TestWriter {
+class TestFodtWriter {
 
     @Test
     fun testCustomWriterStyle() {
@@ -25,7 +27,7 @@ class TestWriter {
             }
         }
         val odtStyleList = OdtStyleList(
-            CustomWriter {
+            OdtCustomWriter {
                 if (it.roles.contains("foo"))
                     preOdNode.apply {
                         "text:p" {
@@ -34,7 +36,7 @@ class TestWriter {
                         }
                     }
             },
-            CustomWriter {
+            OdtCustomWriter {
                 if (it.roles.contains("bar"))
                     preOdNode.apply {
                         "text:span" {
@@ -67,7 +69,7 @@ class TestWriter {
     fun testSimpleModel() {
         val basicOdtStyle = OdtStyleList(
             OdtStyle {
-                if (it !is Header) return@OdtStyle
+                if (it !is Heading) return@OdtStyle
                 attribute("text:style-name", "Heading ${it.level}")
                 "style:text-properties" {
                     attribute("fo:font-size", "${15 - it.level}pt")

@@ -1,12 +1,12 @@
-package common
+package converter.fo
 
 import model.Node
 import reader.HtmlNode
 import reader.UnknownTagProcessing
-import writer.OdtStyleList
+import writer.FoStyleList
 
-interface GenericAdapter {
+interface GenericFoAdapter {
     val unknownTagProcessingRule: HtmlNode.() -> UnknownTagProcessing
-    fun basicStyle(): OdtStyleList
+    fun basicStyle(): FoStyleList
     fun Node.normalizeAll() {}
 }

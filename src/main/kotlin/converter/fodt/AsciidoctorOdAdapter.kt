@@ -1,11 +1,14 @@
-package common
+package converter.fodt
 
+import common.normalizeImageDimensions
+import common.setImageBestFitDimensions
+import converter.AsciidoctorAdapterCommon
 import model.*
 import reader.HtmlNode
 import reader.UnknownTagProcessing
 import writer.*
 
-object AsciidoctorAdapter : GenericAdapter {
+object AsciidoctorOdAdapter : GenericFodtAdapter {
     enum class Color { RED, GREEN, YELLOW, BLUE, ORANGE }
 
     var lightColors = arrayOf(
@@ -259,75 +262,8 @@ object AsciidoctorAdapter : GenericAdapter {
     }
 
     @JvmStatic
-    fun Node.wrapTitleInlineContent() {
-        this.descendant { it is OpenBlock && it.roles.contains("title") }
-            .forEach { openBlock ->
-                openBlock.wrapNodeInlineContents()
-                val table = openBlock.parent()
-                if (table != null && table is Table) {
-                    val tableId = table.id
-                    if (tableId != null) {
-                        openBlock.descendant { it is Paragraph }.firstOrNull()?.apply {
-                            id = tableId
-                        }
-                        table.id = "table--${tableId}"
-                    }
-                    table.insertBefore(openBlock)
-                    openBlock.roles("table-title")
-                }
-            }
-    }
-
-    @JvmStatic
-    fun Node.extractToc() {
-        val parsedToc = this.descendant { it.id == "toc" }
-            .firstOrNull() ?: return
-        val toc = Toc().apply {
-            levels = parsedToc.descendant { it is UnorderedList }
-                .maxOfOrNull { ul -> ul.ancestor { it is UnorderedList }.size + 1 }
-                ?: throw Exception("Can't determine number of levels in the TOC")
-            titleNode = Paragraph().apply {
-                parsedToc.descendant { it.parent()?.id == "toctitle" }.forEach {
-                    appendChild(it)
-                }
-            }
-        }
-        parsedToc.insertBefore(toc)
-        parsedToc.remove()
-    }
-
-
-    fun Node.transformAdmonitions() {
-        this.descendant { it.roles.contains("admonitionblock") }.forEach { block ->
-            val oldTable = block.children().first { it is Table }
-            val (typeContent, content) = run {
-                oldTable
-                    .children().first { it is TableRowGroup }
-                    .children().first { it is TableRow }
-                    .apply {
-                        if (children().size != 2 ||
-                            children().any { it !is TableCell }
-                        ) throw Exception("Can't define admonition block")
-                    }.children()
-            }
-            typeContent.roles("admonition-type-content")
-            content.roles("admonition-content")
-            block.apply {
-                table {
-                    col(Length(100F))
-                    tableRowGroup(TRG.body) {
-                        tr { appendChild(typeContent) }
-                        tr { appendChild(content) }
-                    }
-                }
-            }
-            oldTable.remove()
-        }
-    }
-
-    @JvmStatic
     fun Node.normalizeHeaders() {
-        this.descendant { it is Header }.map { it as Header }.forEach { header ->
+        this.descendant { it is Heading }.map { it as Heading }.forEach { header ->
             if (header.level == 1) {
                 val titleParagraph = Paragraph().apply {
                     roles("doctitle")
@@ -361,14 +297,14 @@ object AsciidoctorAdapter : GenericAdapter {
     fun Node.extractFootnotes() {
         val footnotes: MutableMap<String, Footnote> = mutableMapOf()
         this.descendant { it is Span && it.roles.contains("footnote") }
-            .forEach { footNoteSpan ->
-                val footnoteId = footNoteSpan.id ?: throw Exception("Footnote id not found")
-                val footnoteHref = footNoteSpan.descendant { it is Anchor }.map { it as Anchor }
+            .forEach { footnoteSpan ->
+                val footnoteId = footnoteSpan.id ?: throw Exception("Footnote id not found")
+                val footnoteHref = footnoteSpan.descendant { it is Anchor }.map { it as Anchor }
                     .firstOrNull()
                     .apply { if (this == null) throw Exception("Anchor to footnote not found") }!!
                     .href
                     .substring(1)
-                val footnoteBody = footNoteSpan.ancestor().last()
+                val footnoteBody = footnoteSpan.ancestor().last()
                     .descendant { it.id == footnoteHref }
                     .firstOrNull()
                     .apply { if (this == null) throw Exception("Footnote $footnoteHref not found") }!!
@@ -385,8 +321,8 @@ object AsciidoctorAdapter : GenericAdapter {
                 val footnote = Footnote(footnoteId).apply {
                     footnoteBody.forEach { this.appendChild(it) }
                 }
-                footNoteSpan.insertAfter(footnote)
-                footNoteSpan.remove()
+                footnoteSpan.insertAfter(footnote)
+                footnoteSpan.remove()
                 footnotes[footnoteHref] = footnote
             }
         this.descendant { it is Span && it.roles.contains("footnoteref") }
@@ -404,24 +340,6 @@ object AsciidoctorAdapter : GenericAdapter {
                 footnoteRefSpan.insertAfter(footnoteRef)
                 footnoteRefSpan.remove()
             }
-    }
-
-    fun Node.wrapBlockImages() {
-        this.descendant { image ->
-            image is Image &&
-                    image.ancestor { it.roles.contains("imageblock") }
-                        .isNotEmpty()
-        }.forEach { image ->
-            val imageBlock = image.ancestor { it.roles.contains("imageblock") }.firstOrNull()
-            val p =
-                Paragraph().apply { roles("imageblock-paragraph") }
-            if (imageBlock?.id != null) {
-                p.id = imageBlock.id
-                imageBlock.id = "image-block--${imageBlock.id}"
-            }
-            image.insertAfter(p)
-            p.appendChild(image)
-        }
     }
 
     fun Node.transformDefinitionList() {
@@ -453,12 +371,14 @@ object AsciidoctorAdapter : GenericAdapter {
 
     override fun Node.normalizeAll() {
         trimSimpleTdContent()
-        extractToc()
+        AsciidoctorAdapterCommon.apply { extractToc() }
         wrapTableCellInlineContent()
-        wrapTitleInlineContent()
-        wrapBlockImages()
+        AsciidoctorAdapterCommon.apply {
+            wrapTitleInlineContent()
+            wrapBlockImages()
+        }
         normalizeHeaders()
-        transformAdmonitions()
+        AsciidoctorAdapterCommon.apply { transformAdmonitions() }
         transformExamples()
         transformDefinitionList()
         extractFootnotes()

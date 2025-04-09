@@ -16,8 +16,7 @@ repositories {
 }
 
 group = "ru.fiddlededee"
-version = "0.8.1"
-val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
+version = "0.9.1"
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
@@ -32,10 +31,11 @@ dependencies {
     testImplementation("de.redsix:pdfcompare:1.2.2")
     testImplementation("org.dom4j:dom4j:2.1.4")
     testImplementation("com.helger:ph-css:7.0.1")
+    testImplementation("org.apache.xmlgraphics:fop:2.10")
 
     implementation("org.jsoup:jsoup:1.18.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.2")
-    implementation("org.redundent:kotlin-xml-builder:1.9.1")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.3")
+    implementation("org.redundent:kotlin-xml-builder:1.9.2")
 }
 
 tasks.test {

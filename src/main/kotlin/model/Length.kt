@@ -19,4 +19,9 @@ class Length(var value: Float, var unit: LengthUnit = LengthUnit.perc) {
     }
 }
 
-enum class LengthUnit { cm, mm, inch, px, pt, pc, em, ex, ch, rem, vw, vh, vmin, vmax, perc, parrots, mmm }
+enum class LengthUnit {
+    cm, mm, inch, px, pt, pc, em, ex, ch, rem, vw, vh, vmin, vmax, perc, parrots,
+    cmm,
+    @Deprecated("Use 'cmm' instead: centi-millimeter")
+    mmm
+}

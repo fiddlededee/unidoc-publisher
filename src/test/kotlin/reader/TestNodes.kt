@@ -1,9 +1,9 @@
 package reader
 
-import common.AsciidoctorAdapter
+import converter.fodt.AsciidoctorOdAdapter
 import common.asciidocAsHtml
 import common.prettySerialize
-import converter.FodtConverter
+import converter.fodt.FodtConverter
 import fodt.parseStringAsXML
 import model.Document
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ class TestNodes {
     }
 
     @Test
-    fun IncludeTags() {
+    fun includeTags() {
         FodtConverter {
             html = "<p class='tag--content-1 tag--c2'><span class='tag--c3'>some text</span></p>"
             parse()
@@ -40,14 +40,14 @@ class TestNodes {
     }
 
     @Test
-    fun IncludeTagsAsciidoc() {
+    fun includeTagsAsciidoc() {
         FodtConverter {
             html = """
                 [.tag--content-1]
                 Some paragraph
             """.trimIndent().asciidocAsHtml()
             xpath = "/html/body"
-            unknownTagProcessingRule = AsciidoctorAdapter.unknownTagProcessingRule
+            unknownTagProcessingRule = AsciidoctorOdAdapter.unknownTagProcessingRule
             println(html)
             parse()
             ast?.toYamlString()!!

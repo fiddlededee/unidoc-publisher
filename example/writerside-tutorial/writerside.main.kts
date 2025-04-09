@@ -1,4 +1,4 @@
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.8.1")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.9.1")
 @file:DependsOn("org.jsoup:jsoup:1.17.1")
 
 import converter.FodtConverter
@@ -52,7 +52,7 @@ FodtConverter {
             it.insertAfter(this)
         }
     }
-    File("${scriptPath}/output/ast.yaml").writeText(ast().toYamlString())
+
     ast().descendant { it is Image }.map { it as Image }
         .forEach { image ->
             if (image.ancestor { it is Paragraph }.isEmpty()) {

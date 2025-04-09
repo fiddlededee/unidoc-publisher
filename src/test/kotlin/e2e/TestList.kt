@@ -1,15 +1,12 @@
 package e2e
 
-import common.AsciidoctorAdapter
+import converter.fodt.AsciidoctorOdAdapter
 import common.asciidoc2PdfApprove
 import model.ListItem
 import model.TextFrame
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
 import writer.OdtStyle
 import writer.OdtStyleList
-import writer.graphicProperties
 import java.io.File
 
 
@@ -20,7 +17,7 @@ class TestList {
         File("approved/asciidoc/list-complex-2.adoc")
             .readText()
             .asciidoc2PdfApprove("list-complex-2") {
-                odtStyleList = AsciidoctorAdapter.basicStyle()
+                odtStyleList = AsciidoctorOdAdapter.basicStyle()
                 odtStyleList.add(
                     OdtStyleList(
                         OdtStyle("frame") { frame ->

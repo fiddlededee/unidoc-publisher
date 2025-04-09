@@ -13,6 +13,7 @@ class OdtNameSpaceContext : NamespaceContext {
             "draw" -> "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
             "svg" -> "http://www.w3.org/2000/svg"
             "loext" -> "urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+            "unidoc" -> "ru.fiddlededee:unidoc-publisher"
             else -> null
         }
         return namespaceURI

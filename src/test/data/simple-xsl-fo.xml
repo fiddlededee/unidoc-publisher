@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"
+         xmlns:unidoc="ru.fiddlededee:unidoc-publisher"
+         font-family="Liberation Serif"
+         font-size="12pt"
+>
+    <fo:layout-master-set>
+        <fo:simple-page-master master-name="A4"
+                               page-width="210mm" page-height="297mm"
+                               margin-top="1cm" margin-bottom="1cm"
+                               margin-left="2cm" margin-right="2cm">
+            <fo:region-body margin-top="1cm" margin-bottom="1cm"/>
+            <fo:region-before extent="1cm"/>
+            <fo:region-after extent="1cm"/>
+        </fo:simple-page-master>
+    </fo:layout-master-set>
+
+    <fo:page-sequence master-reference="A4">
+        <fo:static-content flow-name="xsl-region-after">
+            <fo:block>&#160;</fo:block>
+            <fo:block text-align="center" font-family="Liberation Serif" font-size="11pt">
+                <fo:page-number/>
+            </fo:block>
+        </fo:static-content>
+        <fo:flow flow-name="xsl-region-body">
+            <unidoc:include>all</unidoc:include>
+        </fo:flow>
+    </fo:page-sequence>
+</fo:root>

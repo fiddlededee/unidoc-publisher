@@ -25,7 +25,7 @@ class AstPrintNormalizationKtTest {
     ) {
         if (expectedWidth != null && expectedHeight != null) {
             assertEquals(
-                ImageMeta(expectedWidth, expectedHeight, LengthUnit.mmm),
+                ImageMeta(expectedWidth, expectedHeight, LengthUnit.cmm),
                 getBestDimensions(widthPx, heightPx, fitRectWidthMmm, fitRectHeightMmm, srcDpiMmm)
             )
         } else {

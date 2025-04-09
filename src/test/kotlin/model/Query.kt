@@ -23,6 +23,13 @@ class Query {
     }
 
     @Test
+    fun previuosSibling() {
+        Document().apply { arrayOf("a", "b", "c", "d").forEach { p { roles(it) } } }
+            .descendant { it.roles.contains("c") }[0]
+            .previousSibling().nodeRolesSequence() shouldBe "a -> b"
+    }
+
+    @Test
     fun index() {
         lateinit var node: Node
         Document().apply { p { roles("a") }; node = p { roles("b") }; p { roles("c") }; p { roles("d") } }

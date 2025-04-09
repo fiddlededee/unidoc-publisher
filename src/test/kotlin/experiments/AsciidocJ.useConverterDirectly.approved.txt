@@ -1,6 +1,6 @@
 !<Document>
 children:
-- !<Header>
+- !<Heading>
   level: 1
   children:
   - !<Text>

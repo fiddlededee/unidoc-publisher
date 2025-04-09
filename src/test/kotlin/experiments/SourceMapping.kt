@@ -1,7 +1,7 @@
 package experiments
 
-import common.AsciidoctorAdapter
-import converter.FodtConverter
+import converter.fodt.AsciidoctorOdAdapter
+import converter.fodt.FodtConverter
 import model.SourceMapping
 import org.approvaltests.Approvals
 import org.asciidoctor.Asciidoctor
@@ -59,7 +59,7 @@ class SourceMappingTest {
         )
         FodtConverter {
             html = resultHtml
-            adaptWith(AsciidoctorAdapter)
+            adaptWith(AsciidoctorOdAdapter)
             parse()
             ast().descendant { it.roles.any { role -> role.contains("source-mapping") } }
                 .forEach { node ->
