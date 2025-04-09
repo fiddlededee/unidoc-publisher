@@ -7,6 +7,8 @@
 
 UniDoc Publisher is a highly customizable Kotlin library that provides a comprehensive set of tools to parse HTML files into an abstract syntax tree (AST), transform it in any desirable way and render the Open Document flat format (FODT). The latter you can convert to PDF or DOCX with LibreOffice.
 
+include::../../README.adoc[tag=status]
+
 == How to run
 
 Uni-Doc Publisher is just a `.jar`, published to https://central.sonatype.com/[Maven Central]. The most common way to use it is from Kotlin script or as a part of a gradle pipeline that is almost the same.

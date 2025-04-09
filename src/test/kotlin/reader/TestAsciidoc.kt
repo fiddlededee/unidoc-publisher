@@ -28,20 +28,19 @@ class TestAsciidoc {
         """
             .trimIndent()
             .asciidocAsHtml()
-            .apply { println(this) }
+//            .apply { println(this) }
             .htmlMarkupAsHtmlNode()
             .selectAtXpath("/html/body")!!
             .parseAsciidoc().apply {
                 this.descendant { it.roles.contains("unnecessary") }
                     .forEach { it.remove() }
-                this.descendant{it.id == "footer"}
+                this.descendant { it.id == "footer" }
                     .forEach { it.remove() }
-            }
+            }.apply { normalizeWhitespaces() }
             .output()
             .apply { Approvals.verify(this) }
     }
 }
-
 
 
 fun Document.output(): String {

@@ -12,7 +12,7 @@ interface BackendWriter {
     fun write(ol: OrderedList)
     fun write(ul: UnorderedList)
     fun write(li: ListItem)
-    fun write(h: Header)
+    fun write(h: Heading)
     fun write(p: Paragraph)
     fun write(doc: Document)
     fun write(text: Text)

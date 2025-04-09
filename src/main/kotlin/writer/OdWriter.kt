@@ -55,7 +55,7 @@ open class OdWriter(
                         ) throw Exception(
                             "Don't understand ${length.unit} as a length unit" + " see https://en.wikipedia.org/wiki/38_Parrots for details"
                         )
-                        if (length.unit == LengthUnit.mmm)
+                        if (length.unit == LengthUnit.cmm || length.unit == LengthUnit.mmm)
                             attribute(it.first, "${length.value / 100}mm") else
                             attribute(it.first, "${length.value}${length.unit}")
                     }
@@ -179,7 +179,7 @@ open class OdWriter(
         }
     }
 
-    override fun write(h: Header) {
+    override fun write(h: Heading) {
         // todo -- to example
         preOdNode.apply {
             "text:h" {
@@ -277,7 +277,9 @@ open class OdWriter(
                 "text:s" { attribute("text:c", "$spacesNum") }
                 spacesNum = 0
             }
-            if (textChunk != "") -textChunk
+            if (textChunk.isNotEmpty()) {
+                if (textChunk.trim(' ').isNotEmpty()) -textChunk else -" "
+            }
         }
     }
 
@@ -296,7 +298,7 @@ open class OdWriter(
                     if (span.roles.contains("strong") or span.roles.contains("b")) {
                         attribute("fo:font-weight", "bold")
                     }
-                    if (span.roles.contains("mark") ) {
+                    if (span.roles.contains("mark")) {
                         attribute("fo:background-color", "#fef0c2")
                     }
                     arrayOf("super", "sub").forEach { role ->
@@ -312,6 +314,7 @@ open class OdWriter(
     override fun write(a: Anchor) {
         preOdNode.apply {
             "text:a" {
+                attribute("xlink:type", "simple")
                 attribute("xlink:href", a.href)
                 attribute("text:style-name", "Internet Link")
                 attribute("text:visited-style-name", "Visited Internet Link")
@@ -343,27 +346,27 @@ open class OdWriter(
 //                    attributes("fo:line-height" to "100%")
 //                }
 //                odtStyleList.applyStyle(textFrame, this, "p")
-                "draw:frame" {
+            "draw:frame" {
+                attributes(
+                    "draw:style-name" to "Frame",
+                    "style:rel-width" to "100%",
+                    "text:anchor-type" to "paragraph"
+                )
+                graphicProperties {
                     attributes(
-                        "draw:style-name" to "Frame",
-                        "style:rel-width" to "100%",
-                        "text:anchor-type" to "paragraph"
+                        "fo:padding" to "0mm", "fo:border" to "none",
+                        "fo:margin-top" to "0mm", "fo:margin-left" to "0mm", "fo:margin-right" to "0mm",
+                        "fo:margin-bottom" to "2mm",
+                        "style:horizontal-rel" to "paragraph"
                     )
-                    graphicProperties {
-                        attributes(
-                            "fo:padding" to "0mm", "fo:border" to "none",
-                            "fo:margin-top" to "0mm", "fo:margin-left" to "0mm", "fo:margin-right" to "0mm",
-                            "fo:margin-bottom" to "2mm",
-                            "style:horizontal-rel" to "paragraph"
-                        )
-                    }
+                }
 //                    odtStyleList.applyStyle(textFrame, this, "frame")
-                    odtStyleList.applyStyle(textFrame, this)
-                    "draw:text-box" {
-                        process(textFrame, "text-box")
-                    }
+                odtStyleList.applyStyle(textFrame, this)
+                "draw:text-box" {
+                    process(textFrame, "text-box")
                 }
             }
+        }
 //        }
     }
 

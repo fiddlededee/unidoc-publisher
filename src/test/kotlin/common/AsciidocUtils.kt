@@ -1,10 +1,12 @@
 package common
 
-import converter.FodtConverter
+import converter.fodt.AsciidoctorOdAdapter
+import converter.fodt.FodtConverter
 import de.redsix.pdfcompare.CompareResultImpl
 import de.redsix.pdfcompare.PdfComparator
 import model.*
 import org.asciidoctor.Asciidoctor
+import org.asciidoctor.Attributes
 import org.asciidoctor.Options
 import org.asciidoctor.SafeMode
 import reader.GenericHtmlReader
@@ -21,17 +23,24 @@ object AsciidocHtmlFactory {
                 .safe(SafeMode.UNSAFE).sourcemap(true).toFile(false).standalone(true).build()
         )
     }
+
+    fun getHtmlFromFile(file: File): String = factory.convertFile(
+        file,
+        Options.builder().backend("html5").sourcemap(true).safe(SafeMode.UNSAFE)
+            .toFile(false).standalone(true)
+            .attributes(Attributes.builder().attribute("data-uri").build())
+    )
 }
 
 fun String.asciidoc2PdfApprove(key: String, tune: FodtConverter.() -> Unit = {}) {
     val (loConString : String?, remoteDir : String?)  = arrayOf("localhost:8101", "/documents")
     val asciidocMarkup = this
     FodtConverter {
-        adaptWith(AsciidoctorAdapter)
+        adaptWith(AsciidoctorOdAdapter)
         html = asciidocMarkup
             .trimIndent()
             .asciidocAsHtml()
-//        File("temp/html.html").writeText(html!!)
+        File("temp/html.html").writeText(html!!)
         template = File("approved/asciidoc/template-1.fodt").readText()
         tune.invoke(this)
         if (ast == null) parse()

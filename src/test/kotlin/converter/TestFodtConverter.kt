@@ -1,12 +1,14 @@
 package converter
 
+import converter.fodt.FodtConverter
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import verify
 
 
-class TestConverter {
-    @Language("XML") val testTemplate =
+class TestFodtConverter {
+    @Language("XML")
+    val testTemplate =
         """<office:document
                 xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
                 xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
@@ -24,6 +26,8 @@ class TestConverter {
                 </office:body>
         </office:document>
             """
+
+
 
     @Test
     fun testFull() {

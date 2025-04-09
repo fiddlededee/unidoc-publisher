@@ -40,8 +40,10 @@ lo-kts-converter/lo-kts-converter.main.kts \
 
 rm -rf doc-output
 mkdir doc-output
+cp build/unidoc-publisher-doc-fo.pdf doc-output
 cp doc/output/* doc-output
 cp example/ps-118/output/* doc-output
 cp example/builder/output/* doc-output
 cp example/writerside-tutorial/output/* doc-output
+rm -f doc-output.zip
 zip doc-output.zip doc-output/*

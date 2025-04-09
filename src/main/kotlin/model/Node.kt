@@ -8,18 +8,19 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 
+fun document(init: Document.() -> Unit = {}): Document {
+    return Document().apply(init)
+}
+
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 abstract class Node() {
 
-    // todo: next/previous-sibling
-    // todo: ancestors(), nextSiblings(), previousSiblings()
-    // todo: is firtst, is last
     var id: String? = null
     var sourceTagName: String? = null
     var includeTags: MutableSet<String> = mutableSetOf()
     var sourceAttributes: MutableMap<String, String> = mutableMapOf()
-    var sourceMapping : SourceMapping? = null
+    var sourceMapping: SourceMapping? = null
 
     @get:JsonIgnore
     abstract val isInline: Boolean
@@ -68,13 +69,21 @@ abstract class Node() {
         return appendChild(TableCell().apply(init))
     }
 
-    fun h(level: Int, init: Header.() -> Unit = {}): Header {
-        return appendChild(Header(level).apply(init))
+    fun h(level: Int, init: Heading.() -> Unit = {}): Heading {
+        return appendChild(Heading(level).apply(init))
     }
 
 
     fun li(init: ListItem.() -> Unit = {}): ListItem {
         return appendChild(ListItem().apply(init))
+    }
+
+    fun ol(init: OrderedList.() -> Unit = {}): OrderedList {
+        return appendChild(OrderedList().apply(init))
+    }
+
+    fun ul(init: UnorderedList.() -> Unit = {}): UnorderedList {
+        return appendChild(UnorderedList().apply(init))
     }
 
     fun p(init: Paragraph.() -> Unit = {}): Paragraph {
@@ -93,6 +102,10 @@ abstract class Node() {
         return appendChild(Text(text))
     }
 
+    fun openBlock(init: OpenBlock.() -> Unit = {}): OpenBlock {
+        return appendChild(OpenBlock().apply(init))
+    }
+
     operator fun String.unaryPlus(): Text {
         return this@Node.appendChild(Text(this))
     }
@@ -108,32 +121,32 @@ abstract class Node() {
         } else throw Exception("Node doesn't hava a parent")
     }
 
-    fun insertAfter(node: Node): Node {
-        val oldParent = node.parent
+    fun insertAfter(nodeToInsert: Node): Node {
+        val oldParent = nodeToInsert.parent
         val parent = this.parent
             ?: throw Exception("Can't add node after another if it has no parent")
         val index = parent.children.indexOf(this)
         if (index == -1) {
             throw Exception("Didn't find object to add after")
         }
-        parent.children.add(index + 1, node)
-        node.parent = parent
-        oldParent?.removeChild(node)
-        return node
+        parent.children.add(index + 1, nodeToInsert)
+        nodeToInsert.parent = parent
+        oldParent?.removeChild(nodeToInsert)
+        return nodeToInsert
     }
 
-    fun insertBefore(node: Node): Node {
-        val oldParent = node.parent
+    fun insertBefore(nodeToInsert: Node): Node {
+        val oldParent = nodeToInsert.parent
         val parent = this.parent
             ?: throw Exception("Can't add node before another if it has no parent")
         val index = parent.children.indexOf(this)
         if (index == -1) {
             throw Exception("Didn't find object to add after")
         }
-        parent.children.add(index, node)
-        node.parent = parent
-        oldParent?.removeChild(node)
-        return node
+        parent.children.add(index, nodeToInsert)
+        nodeToInsert.parent = parent
+        oldParent?.removeChild(nodeToInsert)
+        return nodeToInsert
     }
 
 
@@ -173,6 +186,15 @@ abstract class Node() {
         return nextSibling
     }
 
+    fun previousSibling(filter: (Node) -> Boolean = { true }): ArrayList<Node> {
+        val previousSibling = arrayListOf<Node>()
+        val parent = this.parent() ?: return previousSibling
+        if (parent.children.indexOf(this) == 0) return previousSibling
+        IntRange(0, parent.children.indexOf(this) - 1).forEach {
+            if (filter(parent.children[it])) previousSibling.add(parent.children[it])
+        }
+        return previousSibling
+    }
     fun hasNext(): Boolean {
         val parent = this.parent() ?: throw Exception("The ${this::class.java.simpleName} has no parent")
         return (parent.children.indexOf(this) != parent.children.size - 1)
@@ -247,10 +269,83 @@ abstract class Node() {
         return this
     }
 
+
+    // Don't understand html rendering rules, hope I'm right about this
+    fun normalizeWhitespaces() {
+        val localAst = this
+        // Cleaning whitespaces after and before block nodes
+        localAst.descendant { it is Text && it.text.isBlank() }.forEach { blankTextNode ->
+            val localParent = blankTextNode.parent() ?: return@forEach
+            val previousConsideredBlock =
+                (!blankTextNode.hasPrevious() && !localParent.isInline) ||
+                        (blankTextNode.hasPrevious() && (
+                                !blankTextNode.previous().isInline ||
+                                        blankTextNode.previous().sourceTagName == "br"
+                                ))
+            val nextConsideredBlock =
+                (!blankTextNode.hasNext() && !localParent.isInline) ||
+                        (blankTextNode.hasNext() && (
+                                !blankTextNode.next().isInline ||
+                                        blankTextNode.next().sourceTagName == "br"
+                                ))
+
+            if (previousConsideredBlock || nextConsideredBlock)
+                blankTextNode.remove()
+        }
+        // Removing extra whitespaces
+        Document().apply { appendChild(localAst) }.descendant { !it.isInline }.forEach { block ->
+            if (block.sourceTagName == "pre" || block.ancestor { it.sourceTagName == "pre" }.isNotEmpty())
+                return@forEach
+            val nodesToNormalise = block.descendant { node ->
+                (node is Image || node is Text || !node.isInline) &&
+                        node.ancestor { !it.isInline }.firstOrNull() == block
+            }
+            var chain: ArrayList<Node> = arrayListOf()
+            nodesToNormalise.forEach searchForChainsToNormalize@{ node ->
+                if (!node.isInline) {
+                    if (chain.isEmpty()) return@searchForChainsToNormalize else {
+                        normalizeChain(chain)
+                        chain = arrayListOf()
+                    }
+                } else chain.add(node)
+            }
+            normalizeChain(chain)
+        }
+    }
+
+    private fun normalizeChain(chain: ArrayList<Node>) {
+        if (chain.isEmpty()) return
+        var trimStart = true
+        chain.forEach byNodesToNormalize@{ node ->
+            if (node is Image || !node.isInline) trimStart = false
+            if (node !is Text) return@byNodesToNormalize
+            if (trimStart) {
+                node.text = node.text.trimStart()
+            } else {
+                if (node.text.trimStart() != node.text) node.text = " " + node.text.trimStart()
+            }
+            if (node.text.trimEnd() != node.text && node.text.isNotEmpty()) {
+                node.text = node.text.trimEnd() + " "
+                trimStart = true
+            } else if (node.text.isNotEmpty()) trimStart = false
+        }
+        val iterator = chain.reversed().iterator()
+        while (iterator.hasNext()) {
+            val el = iterator.next()
+            if (el !is Text) break
+            if (el.text.isBlank()) el.remove() else {
+                el.text = el.text.trimEnd()
+                break
+            }
+        }
+
+    }
+
     fun extractText(replaceRule: (Text) -> String = { it.text }): String {
+        if (this is Text) return replaceRule.invoke(this)
         return descendant { it is Text }
             .map { it as Text }
-            .joinToString("") {text -> replaceRule.invoke(text) }
+            .joinToString("") { text -> replaceRule.invoke(text) }
     }
 
 }

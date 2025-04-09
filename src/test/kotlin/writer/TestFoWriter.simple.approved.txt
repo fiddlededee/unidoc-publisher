@@ -1,0 +1,5 @@
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<fo:block>
+		Some paragraph
+	</fo:block>
+</fo:root>

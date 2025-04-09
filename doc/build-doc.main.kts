@@ -1,9 +1,11 @@
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.8.1")
-@file:DependsOn("org.asciidoctor:asciidoctorj:2.5.11")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.9.1")
+@file:DependsOn("org.jruby:jruby-complete:9.4.12.0")
+@file:DependsOn("org.asciidoctor:asciidoctorj:3.0.0")
 @file:DependsOn("com.helger:ph-css:7.0.1")
 @file:DependsOn("com.google.guava:guava:21.0")
 @file:DependsOn("org.languagetool:language-en:5.6")
 @file:DependsOn("com.github.ajalt.clikt:clikt-jvm:4.2.2")
+@file:DependsOn("com.fasterxml.jackson.core:jackson-annotations:2.18.3")
 
 import com.github.ajalt.clikt.core.NoOpCliktCommand
 import com.github.ajalt.clikt.parameters.options.flag
@@ -64,6 +66,7 @@ object AsciidocHtmlFactory {
         Options.builder().backend("html5").sourcemap(true).safe(SafeMode.UNSAFE)
             .toFile(false).standalone(true)
             .attributes(Attributes.builder().attribute("data-uri").build())
+            .build()
     )
 }
 
@@ -98,7 +101,9 @@ fun indentPreamble(): OdtStyleList {
     return OdtStyleList(
         OdtStyle { preamble ->
             if (preamble !is Paragraph ||
-                preamble.ancestor { it.id == "preamble" }.isEmpty()
+                preamble.ancestor { it.id == "preamble" }.isEmpty() ||
+                preamble.ancestor { it.id == "preamble" }.first()
+                    .descendant { it is Paragraph }.first() != preamble
             ) return@OdtStyle
             paragraphProperties { attributes("fo:margin-top" to "12pt") }
         }

@@ -1,21 +1,21 @@
-package converter
+package converter.fo
 
-import common.GenericAdapter
-import fodt.FodtGenerator
-import model.Document
-import model.Node
+import converter.PreRegion
+import fodt.*
+import model.*
 import org.redundent.kotlin.xml.PrintOptions
+import org.w3c.dom.Element
 import reader.GenericHtmlReader
 import reader.HtmlNode
 import reader.UnknownTagProcessing
-import writer.OdWriter
-import writer.OdtStyleList
+import writer.FoStyleList
+import writer.FoWriter
 
-open class FodtConverter(init: FodtConverter.() -> Unit) {
-    private var adapter: GenericAdapter? = null
-    fun adaptWith(adapter: GenericAdapter) {
+open class FoConverter(init: FoConverter.() -> Unit) {
+    private var adapter: GenericFoAdapter? = null
+    fun adaptWith(adapter: GenericFoAdapter) {
         unknownTagProcessingRule = adapter.unknownTagProcessingRule
-        odtStyleList = adapter.basicStyle()
+        foStyleList = adapter.basicStyle()
         this.adapter = adapter
     }
 
@@ -27,13 +27,12 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
 
     var xpath: String = "/html/body"
     var unknownTagProcessingRule: HtmlNode.() -> UnknownTagProcessing = { UnknownTagProcessing.UNDEFINDED }
-    var customNodeProcessingRule: Node.(htmlNode : HtmlNode) -> Unit = {}
-    var odtStyleList = OdtStyleList()
+    var customNodeProcessingRule: Node.(htmlNode: HtmlNode) -> Unit = {}
+    var foStyleList = FoStyleList()
     var template: String? = null
     var ast: Node? = null
     var preList: ArrayList<PreRegion> = arrayListOf()
-    var fodtGenerator: FodtGenerator? = null
-    var fodt: String? = null
+    var fo: String? = null
     private var htmlNode: HtmlNode? = null
 
     init {
@@ -57,8 +56,8 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
         return html ?: throw Exception("HTML is emplty")
     }
 
-    fun fodt(): String {
-        return fodt ?: throw Exception("Fodt is empty")
+    fun fo(): String {
+        return fo ?: throw Exception("Fo is empty")
     }
 
     fun parse() {
@@ -66,10 +65,16 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
             ?: throw Exception("Please set html")
         ast = Document()
         val localAst = ast ?: throw Exception("Error: ast variable was mutated")
-        newReaderInstance(localAst, localHtmlNode,
-            unknownTagProcessingRule, customNodeProcessingRule)
+        newReaderInstance(
+            localAst, localHtmlNode,
+            unknownTagProcessingRule, customNodeProcessingRule
+        )
             .apply { localAst.setBasics(localHtmlNode); iterateAll() }
+        localAst.normalizeWhitespaces()
     }
+
+    enum class ProcessingType { Trim, ConvertToSpace }
+
 
     fun generatePre() {
         val localAst = ast ?: throw Exception("Ast is null")
@@ -79,42 +84,50 @@ open class FodtConverter(init: FodtConverter.() -> Unit) {
                 ).forEach { nodeToProcess ->
                 val includeTags = nodeToProcess.includeTags
                     .let { if (it.isNotEmpty()) it.toSet() else setOf("all") }
-                val pre = newOdWriterInstance(odtStyleList = odtStyleList)
+                val pre = newFoWriterInstance(foStyleList = foStyleList)
                     .apply { (nodeToProcess.write(this)) }
-                    .preOdNode.toString(PrintOptions(pretty = false))
+                    .preFoNode.toString(PrintOptions(pretty = false))
                 preList.add(PreRegion(includeTags, pre, nodeToProcess.isInline))
             }
 
     }
 
-    fun generateFodt() {
+    fun generateFo() {
+
         val localTemplate = template ?: throw Exception("Please, set template variable")
+        val templateDom = localTemplate.parseStringAsXML()
         if (preList.isEmpty()) throw Exception("Please set pre variable")
-        fodtGenerator = FodtGenerator(preList, localTemplate)
-        serializeFodt()
+        if (preList.size >= 2) throw Exception("Fo converter doesn't support tagged regions for now")
+        val contentPoint = templateDom.xpath("//unidoc:include[text()='all']")
+            .iterable().firstOrNull() ?: throw Exception("Point to include contents not found")
+
+        val excerpt = preList.first().pre.parseStringAsXML()
+
+        excerpt.firstChild.childNodes.iterable().filterIsInstance<Element>().forEach {
+            val importedNode = templateDom.importNode(it, true)
+            contentPoint.parentNode.insertBefore(importedNode, contentPoint)
+        }
+        fo = templateDom.serialize()
     }
 
     fun convert() {
-        parse(); generatePre(); generateFodt()
+        parse(); generatePre(); generateFo()
     }
 
-    fun ast2fodt() {
-        generatePre(); generateFodt()
+    fun ast2fo() {
+        generatePre(); generateFo()
     }
 
-    fun serializeFodt() {
-        fodt = fodtGenerator?.serialize()
-    }
 
     open fun newReaderInstance(
         ast: Node, htmlNode: HtmlNode,
         unknownTagProcessingRule: HtmlNode.() -> UnknownTagProcessing,
-        customNodeProcessing: Node.(htmlNode : HtmlNode) -> Unit
+        customNodeProcessing: Node.(htmlNode: HtmlNode) -> Unit
     ): GenericHtmlReader {
         return GenericHtmlReader(ast, htmlNode, unknownTagProcessingRule, customNodeProcessing)
     }
 
-    open fun newOdWriterInstance(odtStyleList: OdtStyleList): OdWriter {
-        return OdWriter(odtStyleList = odtStyleList)
+    open fun newFoWriterInstance(foStyleList: FoStyleList): FoWriter {
+        return FoWriter(foStyleList = foStyleList)
     }
 }

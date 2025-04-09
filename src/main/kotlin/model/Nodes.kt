@@ -128,6 +128,7 @@ class UnorderedList() : Node() {
 }
 
 class ListItem() : Node() {
+    var label : String? = null;
     override val isInline: Boolean get() = false
     override fun write(bw: BackendWriter) {
         bw.write(this)
@@ -155,7 +156,10 @@ class ListItem() : Node() {
     }
 }
 
-class Header(var level: Int) : Node() {
+@Deprecated("Use Heading instead")
+typealias Header=Heading
+
+class Heading(var level: Int) : Node() {
     override val isInline: Boolean get() = false
     override fun write(bw: BackendWriter) {
         bw.write(this)
@@ -206,7 +210,7 @@ class Text(var text: String) : Node() {
     }
 }
 
-class Toc(var levels: Int = 3, title: String = "Table of contents 111") : Node() {
+class Toc(var levels: Int = 3, title: String = "Table of contents") : Node() {
     var titleNode = Paragraph().apply { +title }
     override val isInline: Boolean get() = false
     override fun write(bw: BackendWriter) {

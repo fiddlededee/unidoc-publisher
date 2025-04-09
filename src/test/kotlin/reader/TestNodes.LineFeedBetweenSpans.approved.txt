@@ -1,0 +1,23 @@
+!<Document>
+sourceTagName: "body"
+children:
+- !<Span>
+  sourceTagName: "i"
+  roles:
+  - "i"
+  children:
+  - !<Text>
+    text: "a"
+- !<Text>
+  text: " "
+- !<Span>
+  sourceTagName: "i"
+  roles:
+  - "i"
+  children:
+  - !<Text>
+    text: "b"
+  - !<Span>
+    sourceTagName: "i"
+    roles:
+    - "i"

@@ -17,17 +17,17 @@ fun getBestDimensions(
         if ((fitRectWidthMmm == null || fitRectHeightMmm == null) || (dpiExpectedWidth <= fitRectWidthMmm && dpiExpectedHeight <= fitRectHeightMmm)) return ImageMeta(
             dpiExpectedWidth,
             dpiExpectedHeight,
-            LengthUnit.mmm
+            LengthUnit.cmm
         )
     }
     if (fitRectWidthMmm != null && fitRectHeightMmm != null) {
         if (widthPx / heightPx > fitRectWidthMmm / fitRectHeightMmm) {
             return (ImageMeta(
-                fitRectWidthMmm, fitRectWidthMmm / widthPx * heightPx, LengthUnit.mmm
+                fitRectWidthMmm, fitRectWidthMmm / widthPx * heightPx, LengthUnit.cmm
             ))
         } else {
             return (ImageMeta(
-                fitRectHeightMmm / heightPx * widthPx, fitRectHeightMmm, LengthUnit.mmm
+                fitRectHeightMmm / heightPx * widthPx, fitRectHeightMmm, LengthUnit.cmm
             ))
         }
     }
@@ -72,12 +72,12 @@ fun Node.normalizeImageDimensions(portraitWidth: Float = 17000F, basicDpi: Float
         arrayOf(imageWidth, imageHeight).filterNotNull().forEach {
             when (it.unit) {
                 LengthUnit.perc -> {
-                    it.unit = LengthUnit.mmm
+                    it.unit = LengthUnit.cmm
                     it.value *= portraitWidth / 100
                 }
 
                 LengthUnit.px -> {
-                    it.unit = LengthUnit.mmm
+                    it.unit = LengthUnit.cmm
                     it.value = it.value * 2540 / basicDpi
                 }
 
@@ -87,7 +87,7 @@ fun Node.normalizeImageDimensions(portraitWidth: Float = 17000F, basicDpi: Float
         if (imageHeight == null) {
             val imageMeta = imageMeta(image.src)
             val newImageWidth = run {
-                imageWidth ?: Length(imageMeta.width / basicDpi * 2540F, LengthUnit.mmm)
+                imageWidth ?: Length(imageMeta.width / basicDpi * 2540F, LengthUnit.cmm)
             }
             image.width = newImageWidth
             val proportionalHeight = newImageWidth.value / imageMeta.width * imageMeta.height

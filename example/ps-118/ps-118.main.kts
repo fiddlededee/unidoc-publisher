@@ -1,5 +1,5 @@
 #!/usr/bin/env kotlin
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.8.1")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.9.1")
 @file:DependsOn("net.lingala.zip4j:zip4j:2.11.5")
 @file:DependsOn("mfietz:jhyphenator:1.0")
 
@@ -147,8 +147,6 @@ val combinedAST = Document().apply {
     p { roles("after-title"); +"(Толкования Священного Писания на bible.optina.ru)" }
     parsedFiles.forEach { this.appendChild(it.value) }
 }
-
-File("example/ps-118/output/yaml.yaml").writeText(combinedAST.toYamlString())
 
 // Inner links converted to page references
 // tag::inner-links-to-page-reference[]
