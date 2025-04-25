@@ -1,0 +1,296 @@
+@font-face {
+    font-family: Liberation Sans;
+    font-weight: 400;
+    src: url(../fonts/LiberationSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: Liberation Serif;
+    font-weight: 400;
+    src: url(../fonts/LiberationSerif-Regular.ttf);
+}
+
+@font-face {
+    font-family: Liberation Serif;
+    font-weight: 400;
+    font-style: italic;
+    src: url(../fonts/LiberationSerif-Italic.ttf);
+}
+
+@font-face {
+    font-family: Liberation Mono;
+    font-weight: 400;
+    src: url(../fonts/LiberationMono-Regular.ttf);
+}
+
+
+@page {
+    @bottom-center {
+        content: counter(page);
+        display: block;
+        width: 100%;
+        height: 1.5cm;
+    }
+}
+
+* {
+    font-family: "Liberation Serif", serif;
+    font-size: 12pt;
+}
+
+h1 {
+    font-family: "Liberation Sans", sans-serif;
+    font-weight: normal;
+    text-align: center;
+    font-size: 16pt;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 2mm;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 2mm;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+p {
+    margin: 0 0 2mm 0;
+}
+
+td p {
+    margin: 0 0 1mm 0;
+}
+
+
+.table-title p {
+    margin-bottom: 1mm;
+    font-style: italic;
+    text-align: right;
+}
+
+.table-title {
+    break-after: avoid;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 3mm;
+}
+
+td {
+    padding: 1mm 1mm 0 1mm;
+    border: 0.7pt solid black;
+}
+
+a {
+    color: #0066CC;
+    text-decoration: inherit;
+}
+
+p code {
+    color: #0066CC;
+    font-family: "Liberation Mono", monospace;
+}
+
+pre {
+    padding: 2mm;
+    /*border-radius: 2mm;*/
+    border-left: 0.7pt solid #AAA;
+    background-color: #f6f8fa;
+}
+
+pre *, pre {
+    font-size: 9pt;
+    font-family: "Liberation Mono", monospace;
+}
+
+pre code table td { padding: 5px; }
+pre code table pre { margin: 0; }
+pre code, pre code .w {
+    color: #24292f;
+    background-color: #f6f8fa;
+}
+pre code .k, pre code .kd, pre code .kn, pre code .kp, pre code .kr, pre code .kt, pre code .kv {
+    color: #cf222e;
+}
+pre code .gr {
+    color: #f6f8fa;
+}
+pre code .gd {
+    color: #82071e;
+    background-color: #ffebe9;
+}
+pre code .nb {
+    color: #953800;
+}
+pre code .nc {
+    color: #953800;
+}
+pre code .no {
+    color: #953800;
+}
+pre code .nn {
+    color: #953800;
+}
+pre code .sr {
+    color: #116329;
+}
+pre code .na {
+    color: #116329;
+}
+pre code .nt {
+    color: #116329;
+}
+pre code .gi {
+    color: #116329;
+    background-color: #dafbe1;
+}
+pre code .kc {
+    color: #0550ae;
+}
+pre code .l, pre code .ld, pre code .m, pre code .mb, pre code .mf, pre code .mh, pre code .mi, pre code .il, pre code .mo, pre code .mx {
+    color: #0550ae;
+}
+pre code .sb {
+    color: #0550ae;
+}
+pre code .bp {
+    color: #0550ae;
+}
+pre code .ne {
+    color: #0550ae;
+}
+pre code .nl {
+    color: #0550ae;
+}
+pre code .py {
+    color: #0550ae;
+}
+pre code .nv, pre code .vc, pre code .vg, pre code .vi, pre code .vm {
+    color: #0550ae;
+}
+pre code .o, pre code .ow {
+    color: #0550ae;
+}
+pre code .gh {
+    color: #0550ae;
+    font-weight: bold;
+}
+pre code .gu {
+    color: #0550ae;
+    font-weight: bold;
+}
+pre code .s, pre code .sa, pre code .sc, pre code .dl, pre code .sd, pre code .s2, pre code .se, pre code .sh, pre code .sx, pre code .s1, pre code .ss {
+    color: #0a3069;
+}
+pre code .nd {
+    color: #8250df;
+}
+pre code .nf, pre code .fm {
+    color: #8250df;
+}
+pre code .err {
+    color: #f6f8fa;
+    background-color: #82071e;
+}
+pre code .c, pre code .ch, pre code .cd, pre code .cm, pre code .cp, pre code .cpf, pre code .c1, pre code .cs {
+    color: #6e7781;
+}
+pre code .gl {
+    color: #6e7781;
+}
+pre code .gt {
+    color: #6e7781;
+}
+pre code .ni {
+    color: #24292f;
+}
+pre code .si {
+    color: #24292f;
+}
+pre code .ge {
+    color: #24292f;
+    font-style: italic;
+}
+pre code .gs {
+    color: #24292f;
+    font-weight: bold;
+}
+
+.admonitionblock.warning table td {
+    border: 0.7pt solid #f8ced0;
+}
+
+.admonitionblock.warning .icon.admonition-type-content {
+    background-color: #f8ced0;
+
+}
+
+div.imageblock {
+    page-break-inside: avoid;
+}
+
+.imageblock-paragraph {
+    text-align: center;
+    margin-bottom: 0;
+
+}
+
+.imageblock .title {
+    text-align: center;
+    font-style: italic;
+}
+
+ol, ul {
+    padding-left: 1cm;
+}
+
+ol ol, ul ol, ol ul, ul ul {
+    padding-left: 6mm;
+}
+
+ul li::marker {
+    content: "• ";
+    font-size: 12pt;
+}
+
+.toc-item::after {
+    content: ' ' leader(dotted) ' ' target-counter(attr(href), page);
+}
+
+.toc-block p {
+    margin-bottom: 0;
+}
+
+.toc-block  {
+    margin-bottom: 4mm;
+}
+
+.contents-1 {
+    font-weight: bold;
+}
+
+.contents-2 {
+    margin-left: 10mm;
+}
+
+.toc-block a {
+    color: black;
+}
+
+.toc-block .toc-paragraph {
+    margin-bottom: 2mm;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.header-image {
+    text-align: center;
+}

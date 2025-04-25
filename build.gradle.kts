@@ -16,7 +16,7 @@ repositories {
 }
 
 group = "ru.fiddlededee"
-version = "0.9.1"
+version = "0.9.2"
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
