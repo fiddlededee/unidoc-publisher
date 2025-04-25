@@ -1,12 +1,12 @@
 package converter.fodt
 
-import common.normalizeImageDimensions
-import common.setImageBestFitDimensions
 import converter.AsciidoctorAdapterCommon
 import model.*
 import reader.HtmlNode
 import reader.UnknownTagProcessing
 import writer.*
+import common.normalizeImageDimensions
+import common.setImageBestFitDimensions
 
 object AsciidoctorOdAdapter : GenericFodtAdapter {
     enum class Color { RED, GREEN, YELLOW, BLUE, ORANGE }
@@ -256,9 +256,50 @@ object AsciidoctorOdAdapter : GenericFodtAdapter {
     }
 
     @JvmStatic
-    fun Node.wrapTableCellInlineContent() {
-        this.descendant { it is TableCell }.map { it as TableCell }
-            .forEach { tableCell -> tableCell.wrapNodeInlineContents() }
+    fun Node.extractToc() {
+        val parsedToc = this.descendant { it.id == "toc" }
+            .firstOrNull() ?: return
+        val toc = Toc().apply {
+            levels = parsedToc.descendant { it is UnorderedList }
+                .maxOfOrNull { ul -> ul.ancestor { it is UnorderedList }.size + 1 }
+                ?: throw Exception("Can't determine number of levels in the TOC")
+            titleNode = Paragraph().apply {
+                parsedToc.descendant { it.parent()?.id == "toctitle" }.forEach {
+                    appendChild(it)
+                }
+            }
+        }
+        parsedToc.insertBefore(toc)
+        parsedToc.remove()
+    }
+
+
+    fun Node.transformAdmonitions() {
+        this.descendant { it.roles.contains("admonitionblock") }.forEach { block ->
+            val oldTable = block.children().first { it is Table }
+            val (typeContent, content) = run {
+                oldTable
+                    .children().first { it is TableRowGroup }
+                    .children().first { it is TableRow }
+                    .apply {
+                        if (children().size != 2 ||
+                            children().any { it !is TableCell }
+                        ) throw Exception("Can't define admonition block")
+                    }.children()
+            }
+            typeContent.roles("admonition-type-content")
+            content.roles("admonition-content")
+            block.apply {
+                table {
+                    col(Length(100F))
+                    tableRowGroup(TRG.body) {
+                        tr { appendChild(typeContent) }
+                        tr { appendChild(content) }
+                    }
+                }
+            }
+            oldTable.remove()
+        }
     }
 
     @JvmStatic
@@ -372,8 +413,9 @@ object AsciidoctorOdAdapter : GenericFodtAdapter {
     override fun Node.normalizeAll() {
         trimSimpleTdContent()
         AsciidoctorAdapterCommon.apply { extractToc() }
-        wrapTableCellInlineContent()
         AsciidoctorAdapterCommon.apply {
+            wrapTableCellInlineContent()
+            moveIdToParagraph()
             wrapTitleInlineContent()
             wrapBlockImages()
         }
@@ -386,4 +428,5 @@ object AsciidoctorOdAdapter : GenericFodtAdapter {
         normalizeImageDimensions()
         setImageBestFitDimensions()
     }
+
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env kotlin
-@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.9.1")
+@file:DependsOn("ru.fiddlededee:unidoc-publisher:0.9.2")
 @file:DependsOn("org.redundent:kotlin-xml-builder:1.9.2")
 
 import org.redundent.kotlin.xml.Node as XmlNode

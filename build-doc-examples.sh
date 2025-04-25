@@ -38,9 +38,18 @@ lo-kts-converter/lo-kts-converter.main.kts \
   -i example/writerside-tutorial/output/export-to-pdf.fodt -f pdf,odt,docx
 # end::body[]
 
+pushd "$(dirname "$0")/weasyprint-docker" || exit
+docker build -t weasyprinttest .
+popd
+cp doc build -r
+docker run --rm -v $PWD:/documents weasyprinttest weasyprint  --presentational-hints \
+  build/unidoc-publisher-doc-html.html  build/unidoc-publisher-doc-html.pdf
+
 rm -rf doc-output
 mkdir doc-output
 cp build/unidoc-publisher-doc-fo.pdf doc-output
+cp build/unidoc-publisher-doc-html.html doc-output
+cp build/unidoc-publisher-doc-html.pdf doc-output
 cp doc/output/* doc-output
 cp example/ps-118/output/* doc-output
 cp example/builder/output/* doc-output

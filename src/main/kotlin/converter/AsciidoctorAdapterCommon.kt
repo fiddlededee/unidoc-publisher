@@ -34,6 +34,19 @@ object AsciidoctorAdapterCommon {
         } else UnknownTagProcessing.UNDEFINDED
     }
 
+    fun Node.moveIdToParagraph() {
+        this.descendant {
+            it is OpenBlock &&
+                    arrayOf("paragraph", "listingblock").any { role -> it.roles.contains(role) }
+        }.forEach { openBlock ->
+            val localId = openBlock.id ?: return@forEach
+            (openBlock.descendant { it is Paragraph }.firstOrNull() ?: return@forEach).apply {
+                id = localId
+                openBlock.id = "open-block-$localId"
+            }
+        }
+    }
+
     @JvmStatic
     fun Node.wrapTitleInlineContent() {
         this.descendant { it is OpenBlock && it.roles.contains("title") }
@@ -117,6 +130,11 @@ object AsciidoctorAdapterCommon {
             }
             oldTable.remove()
         }
+    }
+
+    fun Node.wrapTableCellInlineContent() {
+        this.descendant { it is TableCell }.map { it as TableCell }
+            .forEach { tableCell -> tableCell.wrapNodeInlineContents() }
     }
 
 

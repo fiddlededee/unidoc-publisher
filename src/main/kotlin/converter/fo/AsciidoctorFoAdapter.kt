@@ -1,10 +1,10 @@
 package converter.fo
 
+
+
 import common.normalizeImageDimensions
 import common.setImageBestFitDimensions
 import converter.AsciidoctorAdapterCommon
-import converter.fodt.AsciidoctorOdAdapter
-import converter.fodt.AsciidoctorOdAdapter.wrapTableCellInlineContent
 import model.*
 import reader.HtmlNode
 import reader.UnknownTagProcessing
@@ -167,11 +167,11 @@ object AsciidoctorFoAdapter : GenericFoAdapter {
                     .ancestor { it.roles.contains("admonitionblock") }
                     .firstOrNull()
                     ?.roles ?: throw Exception("Not in an admonition block")
-                AsciidoctorOdAdapter.admonitionColors.filter { admonitionBlockRoles.contains(it.first) }
+                admonitionColors.filter { admonitionBlockRoles.contains(it.first) }
                     .first()
                     .apply {
                         val color =
-                            AsciidoctorOdAdapter.lightColors.toMap()[second]
+                            lightColors.toMap()[second]
                                 ?: throw Exception("Color ${second} not found")
                         if (admonitionCellType == converter.fodt.AsciidoctorOdAdapter.AdmonitionCellType.TYPE_CONTENT)
                             attributes("background-color" to color)
@@ -281,8 +281,9 @@ object AsciidoctorFoAdapter : GenericFoAdapter {
 
     override fun Node.normalizeAll() {
         AsciidoctorAdapterCommon.apply { extractToc() }
-        wrapTableCellInlineContent()
         AsciidoctorAdapterCommon.apply {
+            wrapTableCellInlineContent()
+            moveIdToParagraph()
             wrapTitleInlineContent()
             wrapBlockImages()
         }

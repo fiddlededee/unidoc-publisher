@@ -11,7 +11,7 @@ class DummyNode() : Node() {
 
 abstract class NoWriterNode() : Node() {
     override fun write(bw: BackendWriter) {
-        throw Exception("Writer in NoWriterNodes should be defined in CustomStyle")
+        throw Exception("Writer for NoWriterNodes should be defined in CustomStyle: ${this::class.java.simpleName}")
     }
 }
 

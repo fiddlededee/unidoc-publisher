@@ -5,37 +5,39 @@ import org.redundent.kotlin.xml.Namespace
 import org.redundent.kotlin.xml.xml
 import org.redundent.kotlin.xml.Node as XmlNode
 
-open class FoWriter(
-    preFoNode: XmlNode? = null, val foStyleList: FoStyleList
+open class HtmlWriter(
+    preHtmlNode: XmlNode? = null, val htmlStyleList: HtmlStyleList
 ) : BackendWriter {
     fun XmlNode.process(node: Node, key: String? = null) {
-        foStyleList.applyStyle(node, this, key)
+        htmlStyleList.applyStyle(node, this, key)
+        val currentClass = (attributes["class"]?.toString() ?: "").trim()
+        val newClass = "$currentClass ${node.roles.joinToString(" ")}"
+        if (newClass.isNotBlank()) attributes("class" to newClass.trim())
         node.children().forEach {
             if (it.includeTags.contains("hide")) return@forEach
-            val customProcessed = foStyleList.applyCustomWriter(it, newInstance(this, foStyleList))
-            if (!customProcessed) it.write(newInstance(this, foStyleList))
+            val customProcessed = htmlStyleList.applyCustomWriter(it, newInstance(this, htmlStyleList))
+            if (!customProcessed) it.write(newInstance(this, htmlStyleList))
         }
     }
 
-    val preFoNode = preFoNode ?: xml("fo:root") {
-        namespace(Namespace("fo", "http://www.w3.org/1999/XSL/Format"))
+    val preHtmlNode = preHtmlNode ?: xml("html-root") {
     }
 
-    open fun newInstance(xmlNode: XmlNode, foStyleList: FoStyleList): FoWriter {
-        return FoWriter(xmlNode, foStyleList)
+    open fun newInstance(xmlNode: XmlNode, htmlStyleList: HtmlStyleList): HtmlWriter {
+        return HtmlWriter(xmlNode, htmlStyleList)
     }
 
     override fun write(openBlock: OpenBlock) {
-        preFoNode.apply {
-            "fo:block" {
+        preHtmlNode.apply {
+            "div" {
                 process(openBlock)
             }
         }
     }
 
     override fun write(image: Image) {
-        preFoNode.apply {
-            "fo:external-graphic" {
+        preHtmlNode.apply {
+            "img" {
                 attributes("src" to image.src)
                 arrayOf(
                     "width" to image.width, "height" to image.height
@@ -58,37 +60,37 @@ open class FoWriter(
     }
 
     override fun write(table: Table) {
-        preFoNode.apply {
-            "fo:table" {
+        preHtmlNode.apply {
+            "table" {
                 process(table)
             }
         }
     }
 
     override fun write(tableRowGroup: TableRowGroup) {
-        preFoNode.apply {
+        preHtmlNode.apply {
             when (tableRowGroup.type) {
-                TRG.head -> "fo:table-header" { process(tableRowGroup) }
-                TRG.body -> "fo:table-body" { process(tableRowGroup) }
-                TRG.foot -> "fo:table-footer" { process(tableRowGroup) }
+                TRG.head -> "thead" { process(tableRowGroup) }
+                TRG.body -> "tbody" { process(tableRowGroup) }
+                TRG.foot -> "tfoot" { process(tableRowGroup) }
             }
         }
     }
 
     override fun write(tr: TableRow) {
-        preFoNode.apply {
-            "fo:table-row" {
+        preHtmlNode.apply {
+            "tr" {
                 process(tr)
             }
         }
     }
 
     override fun write(td: TableCell) {
-        preFoNode.apply {
-            "fo:table-cell" {
+        preHtmlNode.apply {
+            "td" {
                 attributes(
-                    "number-columns-spanned" to td.colspan,
-                    "number-rows-spanned" to td.rowspan
+                    "colspan" to td.colspan,
+                    "rowspan" to td.rowspan
                 )
                 process(td)
             }
@@ -96,14 +98,16 @@ open class FoWriter(
     }
 
     override fun write(colGroup: ColGroup) {
-        preFoNode.apply {
-            process(colGroup)
+        preHtmlNode.apply {
+            "colgroup" {
+                process(colGroup)
+            }
         }
     }
 
     override fun write(col: Col) {
-        preFoNode.apply {
-            "fo:table-column" {
+        preHtmlNode.apply {
+            "col" {
                 if (col.width.unit != LengthUnit.perc) throw Exception("Only relative width for columns supported")
                 val localParent = col.parent() ?: throw Exception("Col definition should have a parent")
                 val relColumnWidth = col.width.value /
@@ -116,51 +120,26 @@ open class FoWriter(
     }
 
     override fun write(ol: OrderedList) {
-        preFoNode.apply {
-            "fo:list-block" {
-                process(ol)
-            }
+        preHtmlNode.apply {
+            "ol" { process(ol) }
         }
     }
 
     override fun write(ul: UnorderedList) {
-        preFoNode.apply {
-            "fo:list-block" {
-                process(ul)
-            }
+        preHtmlNode.apply {
+            "ul" { process(ul) }
         }
     }
 
     override fun write(li: ListItem) {
-        preFoNode.apply {
-            "fo:list-item" {
-                "fo:list-item-label" {
-                    //TODO
-                    "fo:block" {
-                        val localLiLabel = li.label
-                        if (localLiLabel != null) -localLiLabel else {
-                            if (li.ancestor { it is OrderedList || it is UnorderedList }
-                                    .first() is UnorderedList) {
-                                -"•"
-                            } else {
-                                -"${(li.previousSibling { it is ListItem }.size + 1)}."
-                            }
-
-                        }
-                        foStyleList.applyStyle(li, this, "list-item-label")
-                    }
-                }
-                "fo:list-item-body" {
-                    process(li, "list-item-body")
-                }
-                foStyleList.applyStyle(li, this)
-            }
+        preHtmlNode.apply {
+            "li" { process(li) }
         }
     }
 
     override fun write(h: Heading) {
-        preFoNode.apply {
-            "fo:block" {
+        preHtmlNode.apply {
+            "h${h.level}" {
                 val localId = h.id
                 if (localId != null) attributes("id" to localId)
                 process(h)
@@ -169,8 +148,9 @@ open class FoWriter(
     }
 
     override fun write(p: Paragraph) {
-        preFoNode.apply {
-            "fo:block" {
+        preHtmlNode.apply {
+            val outputTagName = if (p.roles.contains("pre")) "pre" else "p"
+            outputTagName {
                 val localId = p.id
                 if (localId != null) attributes("id" to localId)
                 process(p)
@@ -179,7 +159,7 @@ open class FoWriter(
     }
 
     override fun write(doc: Document) {
-        preFoNode.apply {
+        preHtmlNode.apply {
             process(doc)
         }
     }
@@ -187,48 +167,38 @@ open class FoWriter(
     override fun write(text: Text) {
         val textToAppend =
             if (text.text.trim('\n', '\r').isEmpty()) "${text.text} " else text.text
-        preFoNode.apply { -textToAppend }
+        preHtmlNode.apply { -textToAppend }
     }
 
     override fun write(span: Span) {
-        preFoNode.apply {
-            "fo:inline" {
-                if (span.roles.contains("em") or span.roles.contains("i")) {
-                    attribute("font-style", "italic")
-                }
-                if (span.roles.contains("strong") or span.roles.contains("b")) {
-                    attribute("font-weight", "bold")
-                }
-                if (span.roles.contains("mark")) {
-                    attribute("background-color", "#fef0c2")
-                }
-                arrayOf("sup", "sub").forEach { role ->
-                    if (span.roles.contains(role))
-                        attributes("vertical-align" to role, "font-size" to "58%")
-                    if (span.roles.contains("sup")) attributes("baseline-shift" to "58%")
-                }
-                process(span)
-            }
+        preHtmlNode.apply {
+            if (span.roles.contains("em") or span.roles.contains("i")) {
+                "em" { process(span) }
+            } else if (span.roles.contains("strong") or span.roles.contains("b")) {
+                "strong" { process(span) }
+            } else if (span.roles.contains("mark")) {
+                "mark" { process(span) }
+            } else if (span.roles.contains("sup")) {
+                "sup" { process(span) }
+            } else if (span.roles.contains("sub")) {
+                "sub" { process(span) }
+            } else if (span.roles.contains("code")) {
+                "code" { process(span) }
+            } else "span" { process(span) }
         }
     }
 
     override fun write(a: Anchor) {
-        preFoNode.apply {
-            "fo:basic-link" {
-                if (a.href.startsWith("#"))
-                    attributes("internal-destination" to "${a.href.substring(1)}") else
-                    attributes("external-destination" to "url('${a.href}')")
+        preHtmlNode.apply {
+            "a" {
+                attributes("href" to a.href)
                 process(a)
             }
         }
     }
 
     override fun write(toc: Toc) {
-        preFoNode.apply {
-            "fo:block" {
-                -"TODO: TOC"
-            }
-        }
+        TODO("Not yet implemented")
     }
 
     override fun write(textFrame: TextFrame) {
@@ -242,6 +212,7 @@ open class FoWriter(
     override fun write(footnoteRef: FootnoteRef) {
         TODO("Not yet implemented")
     }
+
 
     override fun write(dummyNode: Node) {
         TODO("Not yet implemented")
