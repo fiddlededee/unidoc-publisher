@@ -40,7 +40,7 @@ fun String.asciidoc2PdfApprove(key: String, tune: FodtConverter.() -> Unit = {})
         html = asciidocMarkup
             .trimIndent()
             .asciidocAsHtml()
-        File("temp/html.html").writeText(html!!)
+//        File("temp/html.html").writeText(html!!)
         template = File("approved/asciidoc/template-1.fodt").readText()
         tune.invoke(this)
         if (ast == null) parse()

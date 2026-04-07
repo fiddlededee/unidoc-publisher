@@ -45,6 +45,7 @@ open class OdWriter(
     override fun write(image: Image) {
         preOdNode.apply {
             "draw:frame" {
+                attributes("draw:style-name" to "Graphics")
                 arrayOf(
                     "svg:width" to image.width, "svg:height" to image.height
                 ).forEach {
